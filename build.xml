@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="Intro" default="build">
+
+	<!-- Definitions of variables used during the rest of this script -->
+
+	<property file="version.properties" />
+	<property file="application.properties" />
+
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="dist.dir" value="${basedir}/dist" />
+	<property name="dist.lib.dir" value="${basedir}/dist/lib" />
+	<property name="lib.dir" value="${basedir}/lib" />
+
+	<property name="dist.jar" value="${dist.dir}/flux.jar" />
+	<property name="main.class" value="ee.ut.math.tvt.flux.Intro" />
+
+	<path id="base.path" path="${basedir}" />
+	<path id="class.path" path="${build.classes.dir}" />
+	<path id="lib.path">
+		<fileset dir="${lib.dir}" includes="*.jar" excludes="*javadoc* *source*"/>
+	</path>
+
+	<zipfileset id="log.core" includes="**/*.class" src="${lib.dir}/log4j-core-2.0-beta9.jar" />
+	<zipfileset id="log.api" includes="**/*.class" src="${lib.dir}/log4j-api-2.0-beta9.jar" />
+
+
+	<target name="clean" description="Remove all files from previous build.">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+
+	<target name="build" description="Build the system">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" classpathref="lib.path" includeantruntime="false">
+		</javac>
+	</target>
+
+
+	<target name="dist" description="Build .jar file for distribution." depends="increaseRevision, build">
+		<jar destfile="${dist.jar}" basedir="${build.classes.dir}">
+			<zipfileset dir="${basedir}" includes="application.properties" fullpath="application.properties" />
+			<zipfileset dir="${basedir}" includes="version.properties" fullpath="version.properties" />
+			<zipfileset dir="${basedir}" includes="log4j2.xml" fullpath="log4j2.xml" />
+			<zipfileset dir="${basedir}" includes="FluxUI.png" fullpath="FluxUI.png" />
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}" />
+				<attribute name="Class-Path" value="lib/log4j-core-2.0-beta9.jar lib/log4j-api-2.0-beta9.jar" />
+				<attribute name="Implementation-Vendor" value="flux" />
+				<attribute name="Implementation-Title" value="IntroUI" />
+				<attribute name="Implementation-Version" value="${build.number}" />
+			</manifest>
+		</jar>
+		<copy todir="${dist.lib.dir}" flatten="true">
+		  <path refid="lib.path" />
+		</copy>
+	</target>
+
+
+	<target name="run" description="Run the build.">
+		<java classname="${main.class}" classpath="${build.classes.dir}" fork="true">
+			<classpath refid="class.path" />
+			<classpath refid="lib.path" />
+			<classpath refid="base.path" />
+		</java>
+	</target>
+
+
+	<target name="jrun" description="Run the built jar file.">
+		<java jar="${dist.jar}" fork="true" />
+	</target>
+
+
+	<target name="increaseRevision" description="Increase revision and update version.properties.">
+
+		<propertyfile file="version.properties" comment="Version properties">
+			<entry key="build.revision.number" type="int" default="0" operation="+" />
+		</propertyfile>
+
+		<property file="version.properties" prefix="new" />
+
+		<propertyfile file="version.properties" comment="Version properties">
+			<entry key="build.number" operation="=" value="${new.build.major.number}.${new.build.minor.number}.${new.build.revision.number}" />
+		</propertyfile>
+	</target>
+
+</project>
+
