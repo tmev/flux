@@ -6,6 +6,7 @@ import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -23,9 +24,9 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
 public class IntroUI extends JFrame implements MouseMotionListener, MouseListener{
-	
+
 	private static final long serialVersionUID = 8821652971254981654L;
-	
+
 	private static final int borderRoundArc = 65;
 	private int width;
 	private int height;
@@ -34,35 +35,35 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 	private Font font;
 	private Font font_40;
 	private Font font_28;
-	
+
 	Properties appProp;
 	Properties versProp;
-	
+
 	private ClassLoader loader;
 	private Logger logger;
-	
+
 	public IntroUI() {
 		loader = this.getClass().getClassLoader();
-		
+
 		// Initialize and configure logger.
 		Configurator.initialize("IntroUI", loader, loader.getResource("log4j2.xml").toString());
 		logger = LogManager.getLogger();
-		
 
-		
+
+
 		// Load background and set window size.
 		setTitle("flux");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setIconImage(imIcon);
-		
+
 		Image bg = null;
 		try {
 			bg = ImageIO.read(loader.getResourceAsStream("solidFluxUI.png"));
 		} catch (IOException e) {
-		
+
 			e.printStackTrace();
 		}
-		
+
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT,
 					loader.getResourceAsStream("OpenSans-Light.ttf"));
@@ -77,21 +78,21 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		setSize(width, height);
 		setResizable(false);
 		setUndecorated(true);
-		
+
 		RoundRectangle2D rr = new RoundRectangle2D.Double(0, 0, width, height, borderRoundArc, borderRoundArc);
 		setShape(rr);
-		
+
 		imp = new ImagePanel(bg);
 		getLayeredPane().add(imp, new Integer(Integer.MIN_VALUE));
 		((JPanel) getContentPane()).setOpaque(false);
 		imp.setBounds(getX(), getY(), getWidth(), getHeight());
-		
+
 		addMouseMotionListener(this);
 		addMouseListener(this);
-		
+
 		appProp = new Properties();
 		versProp = new Properties();
-		
+
 		try {
 			appProp.load(loader.getResourceAsStream("application.properties"));
 			versProp.load(loader.getResourceAsStream("version.properties"));
@@ -101,7 +102,7 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		JPanel p = new JPanel();
 		p.setLayout(null);
 		p.setOpaque(false);
-		
+
 		JLabel teamName = new JLabel("Team name: " + appProp.getProperty("teamName"));
 		JLabel teamLeader = new JLabel("Team leader: " + appProp.getProperty("teamLeader"));
 		JLabel member1 = new JLabel(appProp.getProperty("teamMembers").split(", ")[0]);
@@ -109,11 +110,11 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		JLabel member3 = new JLabel(appProp.getProperty("teamMembers").split(", ")[2]);
 		JLabel member4 = new JLabel(appProp.getProperty("teamMembers").split(", ")[3]);
 		JLabel version = new JLabel(versProp.getProperty("build.number"));
-		
+
 		p.add(teamName);
 		p.add(teamLeader);
 		p.add(version);
-		
+
 		Dimension size = teamName.getPreferredSize();
 		//teamName.setBounds(600, 5,size.width, size.height);
 		size = teamLeader.getPreferredSize();
@@ -122,44 +123,38 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		version.setFont(font_40);		
 		version.setBounds(590, 40, 130, 50);
 
-		p.add(member1);
-		member1.setFont(font_28);		
-		p.add(member2);
-		member2.setFont(font_28);
-		p.add(member3);
-		member3.setFont(font_28);
-		p.add(member4);
-		member4.setFont(font_28);
-		
-		size = member1.getPreferredSize();
-		member1.setBounds(80, 240,size.width, size.height);
-		size = member2.getPreferredSize();
-		member2.setBounds(80, 270,size.width, size.height);
-		size = member3.getPreferredSize();
-		member3.setBounds(80, 300,size.width, size.height);
-		size = member4.getPreferredSize();
-		member4.setBounds(80, 330,size.width, size.height);
-		
+		JLabel[] labels= {member1,member2,member3,member4};
+
+		for(int i = 0;i<labels.length; i++){
+			p.add(labels[i]);
+			labels[i].setFont(font_28);
+			size = labels[i].getPreferredSize();
+			labels[i].setBounds(80, 240+30*i,size.width, size.height);
+		}
+
+
 		JButton exitButton= new JButton();
-		
+
 		exitButton.setBorderPainted(false); 
 		exitButton.setContentAreaFilled(false); 
 		exitButton.setFocusPainted(false); 
 		exitButton.setOpaque(false);
-		
-        p.add(exitButton);
-       Image exitImage = null;
-	try {
-		exitImage = ImageIO.read(loader.getResourceAsStream("closeButton.png"));
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-        exitButton.setIcon(new ImageIcon(exitImage));
-        exitButton.addActionListener(new exitApp());
-        exitButton.setBounds(755, 25,12, 12);
-        	
+		p.add(exitButton);
+		Image exitImage = null;
+		try {
+			exitImage = ImageIO.read(loader.getResourceAsStream("closeButton.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		exitButton.setIcon(new ImageIcon(exitImage));
+		exitButton.addActionListener(new exitApp());
+		exitButton.setBounds(755, 25,12, 12);
+
 		add(p);
-		
+
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+
 		setVisible(true);
 		logger.info("Intro window opened.");
 	}
@@ -177,20 +172,20 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 			/*((Graphics2D)g).setComposite(AlphaComposite.Clear);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			((Graphics2D)g).setComposite(AlphaComposite.Src);*/
-			
+
 			//g.drawImage(im, 0, 0, null);
 			g.drawImage(im, 0, 0, getWidth(), getHeight(), 0, 0, im.getWidth(null), im.getHeight(null), null);
 			g.dispose();
 		}
 	}
 	static class exitApp implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
-            System.exit(0);
-        }
-    }
-	
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			System.exit(0);
+		}
+	}
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		Point newCursorPosition = e.getPoint();
@@ -206,10 +201,10 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int screenX = e.getXOnScreen();
-	    int screenY = e.getYOnScreen();
-	    System.out.println("Click coordinates: " + screenX + "," + screenY);
+		int screenY = e.getYOnScreen();
+		System.out.println("Click coordinates: " + screenX + "," + screenY);
 	}
-	
+
 
 	@Override
 	public void mousePressed(MouseEvent e) {
