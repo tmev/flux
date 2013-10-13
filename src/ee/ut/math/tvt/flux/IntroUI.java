@@ -2,6 +2,7 @@ package ee.ut.math.tvt.flux;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
@@ -95,24 +96,33 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		JLabel member3 = new JLabel(appProp.getProperty("teamMembers").split(", ")[2]);
 		JLabel member4 = new JLabel(appProp.getProperty("teamMembers").split(", ")[3]);
 		JLabel version = new JLabel(versProp.getProperty("build.number"));
-		Insets insets = p.getInsets();
-		Dimension size = teamName.getPreferredSize();
+		
 		p.add(teamName);
 		p.add(teamLeader);
 		p.add(version);
 		
-		teamName.setBounds(600 + insets.left, 5 + insets.top,size.width, size.height);
+		Dimension size = teamName.getPreferredSize();
+		teamName.setBounds(600, 5,size.width, size.height);
 		size = teamLeader.getPreferredSize();
-		teamLeader.setBounds(600 + insets.left, 20 + insets.top,size.width, size.height);
-		version.setBounds(600 + insets.left, 35 + insets.top,size.width, size.height);
-		
+		teamLeader.setBounds(600 , 20,size.width, size.height);
+		version.setBounds(600, 35,size.width, size.height);
 
 		p.add(member1);
+		
+		member1.setFont(new Font("Open Sans", Font.BOLD, 18));
+		
 		p.add(member2);
 		p.add(member3);
 		p.add(member4);
 		
-		
+		size = member1.getPreferredSize();
+		member1.setBounds(80, 240,size.width, size.height);
+		size = member2.getPreferredSize();
+		member2.setBounds(80, 270,size.width, size.height);
+		size = member3.getPreferredSize();
+		member3.setBounds(80, 300,size.width, size.height);
+		size = member4.getPreferredSize();
+		member4.setBounds(80, 330,size.width, size.height);
 		
 	
 		add(p);
