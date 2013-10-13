@@ -1,13 +1,11 @@
 package ee.ut.math.tvt.flux;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -31,6 +29,9 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 	private int height;
 	private ImagePanel imp;
 	private Point cursorPositionOnMouseDown;
+	private Font font;
+	private Font font_35;
+	private Font font_28;
 	
 	Properties appProp;
 	Properties versProp;
@@ -59,6 +60,16 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		
 			e.printStackTrace();
 		}
+		
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT,
+					loader.getResourceAsStream("OpenSans-Light.ttf"));
+		} catch (FontFormatException | IOException e1) {
+			font =  new Font("Sans", Font.PLAIN, 20);
+		}
+		font_35 = font.deriveFont((float) 35);
+		font_28 = font.deriveFont((float) 28);
+
 		width = bg.getWidth(null);
 		height = bg.getHeight(null);
 		setSize(width, height);
@@ -106,17 +117,17 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		size = teamLeader.getPreferredSize();
 		//teamLeader.setBounds(600 , 20,size.width, size.height);
 		//size = version.getPreferredSize();
-		version.setFont(new Font("Open Sans Light", 0, 35));		
-		version.setBounds(600, 55,100,35);
+		version.setFont(font_35);		
+		version.setBounds(600, 55, 100, 35);
 
 		p.add(member1);
-		member1.setFont(new Font("Open Sans Light", 0, 28));		
+		member1.setFont(font_28);		
 		p.add(member2);
-		member2.setFont(new Font("Open Sans Light", 0, 28));
+		member2.setFont(font_28);
 		p.add(member3);
-		member3.setFont(new Font("Open Sans Light", 0, 28));
+		member3.setFont(font_28);
 		p.add(member4);
-		member4.setFont(new Font("Open Sans Light", 0, 28));
+		member4.setFont(font_28);
 		
 		size = member1.getPreferredSize();
 		member1.setBounds(80, 240,size.width, size.height);
