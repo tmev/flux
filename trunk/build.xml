@@ -46,6 +46,7 @@
 			<zipfileset dir="${basedir}" includes="version.properties" fullpath="version.properties" />
 			<zipfileset dir="${basedir}" includes="log4j2.xml" fullpath="log4j2.xml" />
 			<zipfileset dir="${basedir}" includes="solidFluxUI.png" fullpath="solidFluxUI.png" />
+			<zipfileset dir="${basedir}" includes="closeButton.png" fullpath="closeButton.png" />
 			<zipfileset dir="${basedir}" includes="OpenSans-Light.ttf" fullpath="OpenSans-Light.ttf" />
 			<manifest>
 				<attribute name="Main-Class" value="${main.class}" />

@@ -6,6 +6,8 @@ import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -30,7 +32,7 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 	private ImagePanel imp;
 	private Point cursorPositionOnMouseDown;
 	private Font font;
-	private Font font_35;
+	private Font font_40;
 	private Font font_28;
 	
 	Properties appProp;
@@ -67,7 +69,7 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		} catch (FontFormatException | IOException e1) {
 			font =  new Font("Sans", Font.PLAIN, 20);
 		}
-		font_35 = font.deriveFont((float) 35);
+		font_40 = font.deriveFont((float) 40);
 		font_28 = font.deriveFont((float) 28);
 
 		width = bg.getWidth(null);
@@ -117,8 +119,8 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		size = teamLeader.getPreferredSize();
 		//teamLeader.setBounds(600 , 20,size.width, size.height);
 		//size = version.getPreferredSize();
-		version.setFont(font_35);		
-		version.setBounds(600, 55, 100, 35);
+		version.setFont(font_40);		
+		version.setBounds(590, 40, 130, 50);
 
 		p.add(member1);
 		member1.setFont(font_28);		
@@ -138,7 +140,24 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		size = member4.getPreferredSize();
 		member4.setBounds(80, 330,size.width, size.height);
 		
-	
+		JButton exitButton= new JButton();
+		
+		exitButton.setBorderPainted(false); 
+		exitButton.setContentAreaFilled(false); 
+		exitButton.setFocusPainted(false); 
+		exitButton.setOpaque(false);
+		
+        p.add(exitButton);
+       Image exitImage = null;
+	try {
+		exitImage = ImageIO.read(loader.getResourceAsStream("closeButton.png"));
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+        exitButton.setIcon(new ImageIcon(exitImage));
+        exitButton.addActionListener(new exitApp());
+        exitButton.setBounds(755, 25,12, 12);
+        	
 		add(p);
 		
 		setVisible(true);
@@ -164,6 +183,13 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 			g.dispose();
 		}
 	}
+	static class exitApp implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            System.exit(0);
+        }
+    }
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
