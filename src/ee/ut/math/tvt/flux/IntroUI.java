@@ -102,18 +102,21 @@ public class IntroUI extends JFrame implements MouseMotionListener, MouseListene
 		p.add(version);
 		
 		Dimension size = teamName.getPreferredSize();
-		teamName.setBounds(600, 5,size.width, size.height);
+		//teamName.setBounds(600, 5,size.width, size.height);
 		size = teamLeader.getPreferredSize();
-		teamLeader.setBounds(600 , 20,size.width, size.height);
-		version.setBounds(600, 35,size.width, size.height);
+		//teamLeader.setBounds(600 , 20,size.width, size.height);
+		//size = version.getPreferredSize();
+		version.setFont(new Font("Open Sans Light", 0, 35));		
+		version.setBounds(600, 55,100,35);
 
 		p.add(member1);
-		
-		member1.setFont(new Font("Open Sans", Font.BOLD, 18));
-		
+		member1.setFont(new Font("Open Sans Light", 0, 28));		
 		p.add(member2);
+		member2.setFont(new Font("Open Sans Light", 0, 28));
 		p.add(member3);
+		member3.setFont(new Font("Open Sans Light", 0, 28));
 		p.add(member4);
+		member4.setFont(new Font("Open Sans Light", 0, 28));
 		
 		size = member1.getPreferredSize();
 		member1.setBounds(80, 240,size.width, size.height);
