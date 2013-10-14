@@ -67,7 +67,8 @@
 			<classpath refid="class.path" />
 			<classpath refid="lib.path" />
 			<classpath refid="base.path" />
-
+			<jvmarg value="-Xdebug" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
 		</java>
 	</target>
 
