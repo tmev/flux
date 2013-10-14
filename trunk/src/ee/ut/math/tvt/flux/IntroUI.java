@@ -98,7 +98,13 @@ public class IntroUI extends JFrame implements MouseMotionListener,
 		imp = new ImagePanel(bg);
 		getLayeredPane().add(imp, new Integer(Integer.MIN_VALUE));
 		((JPanel) getContentPane()).setOpaque(false);
-		imp.setBounds(getX(), getY(), getWidth(), getHeight());
+		
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(dim.width / 2 - this.getSize().width / 2, dim.height
+				/ 2 - this.getSize().height / 2);
+		
+		imp.setBounds(0, 0, getWidth(), getHeight());
+		logger.info(String.format("%d:%d", getX(), getY()));
 
 		addMouseMotionListener(this);
 		addMouseListener(this);
@@ -155,10 +161,6 @@ public class IntroUI extends JFrame implements MouseMotionListener,
 		exitButton.setBounds(755, 25, 12, 12);
 
 		add(p);
-
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height
-				/ 2 - this.getSize().height / 2);
 
 		setVisible(true);
 		logger.info("Intro window opened.");

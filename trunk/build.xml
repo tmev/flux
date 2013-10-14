@@ -67,6 +67,7 @@
 			<classpath refid="class.path" />
 			<classpath refid="lib.path" />
 			<classpath refid="base.path" />
+
 		</java>
 	</target>
 
