@@ -1,6 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
-import ee.ut.math.tvt.flux.Intro;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -24,9 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
  * Purchase pane + shopping cart tabel UI.
  */
@@ -41,7 +37,6 @@ public class PurchaseItemPanel extends JPanel {
 	private JTextField priceField;
 	private JButton addItemButton;
 
-	private static final Logger log = LogManager.getLogger(PurchaseItemPanel.class);
 	// Warehouse model
 	private SalesSystemModel model;
 
@@ -160,7 +155,6 @@ public class PurchaseItemPanel extends JPanel {
 		if (stockItem != null) {
 			String idString = String.valueOf(stockItem.getId());
 			barCodeField.setText(idString);
-			log.info("barCode is: " + barCodeField.getText());
 			String priceString = String.valueOf(stockItem.getPrice());
 			priceField.setText(priceString);
 		} else {
@@ -172,6 +166,7 @@ public class PurchaseItemPanel extends JPanel {
 	// to the barCode textfield.
 
 
+	@SuppressWarnings("unused")
 	private StockItem getStockItemByBarcode() {
 		try {
 			int code = Integer.parseInt(barCodeField.getText());
@@ -207,8 +202,10 @@ public class PurchaseItemPanel extends JPanel {
 			} catch (NumberFormatException ex) {
 				quantity = 1;
 			}
+
 			model.getCurrentPurchaseTableModel().addItem(
 					new SoldItem(stockItem, quantity));
+			
 		}
 	}
 
