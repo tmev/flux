@@ -18,7 +18,6 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
 
     protected List<T> rows;
     protected final String[] headers;
-
     public SalesSystemTableModel(final String[] headers) {
         this.headers = headers;
         rows = new ArrayList<T>();
@@ -54,6 +53,14 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
     public T getItemById(final long id) {
         for (final T item : rows) {
             if (item.getId() == id)
+                return item;
+        }
+        throw new NoSuchElementException();
+    }
+    
+    public T getItemByName(final String name) {
+        for (final T item : rows) {
+            if (item.getName().equals(name))
                 return item;
         }
         throw new NoSuchElementException();
