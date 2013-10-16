@@ -88,11 +88,11 @@ public class PurchaseItemPanel extends JPanel {
 		panel.setLayout(new GridLayout(5, 2));
 		panel.setBorder(BorderFactory.createTitledBorder("Product"));
 
-		String[] comboTypes = { "", "Lays chips", "Chupa-chups", "Frankfurters", "Free Beer" };
+		String[] productNames = { "", "Lays chips", "Chupa-chups", "Frankfurters", "Free Beer" };
 
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		final JComboBox combo = new JComboBox(comboTypes);
+		final JComboBox choiseField = new JComboBox(productNames);
 
 		// Initialize the textfields
 		barCodeField = new JTextField();
@@ -101,7 +101,7 @@ public class PurchaseItemPanel extends JPanel {
 		priceField = new JTextField();
 
 		// Fill the dialog fields if the bar code text field loses focus
-		combo.addFocusListener(new FocusListener() {
+		choiseField.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 			}
 
@@ -125,14 +125,14 @@ public class PurchaseItemPanel extends JPanel {
 		// - name
 		panel.add(new JLabel("Name:"));
 
-		combo.addActionListener(new ActionListener() {
+		choiseField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String choise = (String) combo.getSelectedItem();
+				String choise = (String) choiseField.getSelectedItem();
 				nameField.setText(choise);
 				fillDialogFields();
 			}
 		});
-		panel.add(combo);
+		panel.add(choiseField);
 
 		//panel.add(nameField);
 

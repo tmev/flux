@@ -31,17 +31,14 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		List<SoldItem> saveList = new ArrayList<SoldItem>();
 
 		//debug
-
 		for(int i = 0;i<goods.size();i++){
 			log.debug("I will save: " + goods.get(i).getName());
 		}
 
 		//Saving
-
 		for(int i = 0;i<goods.size();i++){
 			saveList.add(goods.get(i));
 		}
-
 
 		//debug  + sum
 		totalSum = 0;

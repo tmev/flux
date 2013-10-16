@@ -1,9 +1,6 @@
 package ee.ut.math.tvt.flux;
 
 import java.awt.GridLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,11 +10,6 @@ import javax.swing.event.DocumentListener;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-
-
-
-
 
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 
@@ -35,17 +27,19 @@ public class PaymentWindow extends SalesDomainControllerImpl {
 		sumField.setEditable(false);
 		panel.add(sumField);
 
-		panel.add(new JLabel("Payment ammount:"));
+		panel.add(new JLabel("Payment amount:"));
 
 		final JTextField paymentField = new JTextField();
 		panel.add(paymentField);
 
-		panel.add(new JLabel("Change ammount:"));
+		panel.add(new JLabel("Change amount:"));
 
 		final JTextField changeField = new JTextField();
 		changeField.setEditable(false);
 		panel.add(changeField);
 
+		
+		//This able to see live calculation of change amount
 		paymentField.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
