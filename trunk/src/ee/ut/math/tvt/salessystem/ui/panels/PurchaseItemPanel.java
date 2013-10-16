@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
+import ee.ut.math.tvt.flux.Intro;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -18,10 +19,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -36,7 +41,7 @@ public class PurchaseItemPanel extends JPanel {
 	private JTextField nameField;
 	private JTextField priceField;
 	private JButton addItemButton;
-
+	private static final Logger log = LogManager.getLogger(PurchaseItemPanel.class);
 	// Warehouse model
 	private SalesSystemModel model;
 
@@ -195,16 +200,26 @@ public class PurchaseItemPanel extends JPanel {
 	public void addItemEventHandler() {
 		// add chosen item to the shopping cart.
 		StockItem stockItem = getStockItemByName();
-		if (stockItem != null) {
-			int quantity;
-			try {
-				quantity = Integer.parseInt(quantityField.getText());
-			} catch (NumberFormatException ex) {
-				quantity = 1;
-			}
-
+		
+		int quantity;
+		int stockSize;		
+		
+		stockSize = stockItem.getQuantity();
+		
+		try {
+			quantity = Integer.parseInt(quantityField.getText());
+			
+		} catch (NumberFormatException ex) {
+			quantity = 1;
+		}
+		if(stockSize-quantity<0){
+			JOptionPane.showMessageDialog(this, "Not enough " + stockItem.getName() +" in stock");
+			stockItem = null;
+		}
+		if (stockItem != null) {	
 			model.getCurrentPurchaseTableModel().addItem(
 					new SoldItem(stockItem, quantity));
+			stockItem.setQuantity(stockItem.getQuantity()-quantity);
 			
 		}
 	}
