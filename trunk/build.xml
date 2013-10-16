@@ -72,6 +72,13 @@
 		</java>
 	</target>
 
+	
+	<target name="runc" depends="build" description="Run the application (console)">
+		<java classname="${main.class}" classpath="${build.classes.dir}" fork="true">
+			<arg value="console" />
+		</java>
+	</target>
+	
 
 	<target name="jrun" description="Run the built jar file.">
 		<java jar="${dist.jar}" fork="true" />
