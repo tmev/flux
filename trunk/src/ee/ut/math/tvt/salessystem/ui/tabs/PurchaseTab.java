@@ -169,12 +169,15 @@ public class PurchaseTab {
 
   /** Event handler for the <code>submit purchase</code> event. */
   protected void submitPurchaseButtonClicked() {
-    log.info("Sale complete");
+
     try {
       log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
       domainController.submitCurrentPurchase(
           model.getCurrentPurchaseTableModel().getTableRows()
       );
+      
+	  //new PaymentWindow();
+	  log.debug("Window open");
       endSale();
       model.getCurrentPurchaseTableModel().clear();
     } catch (VerificationFailedException e1) {

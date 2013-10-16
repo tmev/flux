@@ -1,6 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
-import ee.ut.math.tvt.flux.Intro;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -25,8 +24,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import org.apache.logging.log4j.LogManager;
+/*import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+*/
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -41,7 +41,7 @@ public class PurchaseItemPanel extends JPanel {
 	private JTextField nameField;
 	private JTextField priceField;
 	private JButton addItemButton;
-	private static final Logger log = LogManager.getLogger(PurchaseItemPanel.class);
+	//private static final Logger log = LogManager.getLogger(PurchaseItemPanel.class);
 	// Warehouse model
 	private SalesSystemModel model;
 
@@ -213,7 +213,7 @@ public class PurchaseItemPanel extends JPanel {
 			quantity = 1;
 		}
 		if(stockSize-quantity<0){
-			JOptionPane.showMessageDialog(this, "Not enough " + stockItem.getName() +" in stock");
+			JOptionPane.showMessageDialog(this, "Not enough " + stockItem.getName() +" in the stock");
 			stockItem = null;
 		}
 		if (stockItem != null) {	
