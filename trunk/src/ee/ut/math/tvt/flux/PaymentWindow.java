@@ -1,31 +1,86 @@
 package ee.ut.math.tvt.flux;
 
 import java.awt.GridLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-/*import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;*/
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
+
+
 
 
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 
 public class PaymentWindow extends SalesDomainControllerImpl {
-
+	private static final Logger log = LogManager.getLogger(PaymentWindow.class);
 	public static void createPaymentWindow() {
 		JFrame frame = new JFrame("Payment");	
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(5, 2));
+
 		panel.add(new JLabel("Total sum:"));
-		String sumText = String.valueOf(getTotalSum());
+
+		final String sumText = String.valueOf(getTotalSum());
 		JTextField sumField = new JTextField(sumText);
 		sumField.setEditable(false);
 		panel.add(sumField);
+
+		panel.add(new JLabel("Payment ammount:"));
+
+		final JTextField paymentField = new JTextField();
+		panel.add(paymentField);
+
+		panel.add(new JLabel("Change ammount:"));
+
+		final JTextField changeField = new JTextField();
+		changeField.setEditable(false);
+		panel.add(changeField);
+
+		paymentField.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {		
+				double payment =  Double.parseDouble(paymentField.getText());
+				double sum = getTotalSum();
+				if((payment-sum)>=0){
+				changeField.setText(String.valueOf(payment-sum));
+				}
+				else{
+					changeField.setText("Payment is insufficient");
+				}
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {		
+				double payment =  Double.parseDouble(paymentField.getText());
+				double sum = getTotalSum();
+				if((payment-sum)>=0){
+					changeField.setText(String.valueOf(payment-sum));
+					}
+					else{
+						changeField.setText("Payment is insufficient");
+					}
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {		
+			}
+			 
+			});
+
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.add(panel);
+		frame.setSize(100, 200);
 		frame.pack();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);

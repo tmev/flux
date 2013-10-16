@@ -134,7 +134,7 @@ public class PurchaseItemPanel extends JPanel {
 		});
 		panel.add(combo);
 
-		// panel.add(nameField);
+		//panel.add(nameField);
 
 		// - price
 		panel.add(new JLabel("Price:"));
