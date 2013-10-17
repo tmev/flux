@@ -1,10 +1,16 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -12,12 +18,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class StockTab {
-
+  StockTableModel stockTableModel;
   private JButton addItem;
-
+  private static final Logger log = LogManager.getLogger(StockTab.class);
   private SalesSystemModel model;
+  private StockItem stockItem;
 
   public StockTab(SalesSystemModel model) {
     this.model = model;
@@ -59,6 +69,15 @@ public class StockTab {
     gc.weightx = 0;
 
     addItem = new JButton("Add");
+    addItem.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e)
+		{
+			
+			log.debug("Add click.");
+			stockTableModel.addItem(stockItem);
+		}
+	});    
+    
     gc.gridwidth = GridBagConstraints.RELATIVE;
     gc.weightx = 1.0;
     panel.add(addItem, gc);
