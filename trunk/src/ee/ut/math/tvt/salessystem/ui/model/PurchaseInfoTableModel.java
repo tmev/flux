@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import java.util.Iterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,6 +10,7 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
  * Purchase history details model.
  */
 public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
+	
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger log = LogManager.getLogger(PurchaseInfoTableModel.class);
@@ -68,6 +70,20 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
 		log.debug("Added " + item.getName() + " quantity of " + item.getQuantity() + " sum is: " + item.getSum() );
 		fireTableDataChanged();
+	}
+	
+	public double getTotalSum() {
+
+		int totalSum = 0;
+		
+		Iterator<SoldItem> it = rows.iterator();
+		
+		while (it.hasNext()) {
+			totalSum += it.next().getSum();
+		}
+		log.debug("Sum is " +  totalSum);
+		
+		return totalSum;
 	}
 	
 }

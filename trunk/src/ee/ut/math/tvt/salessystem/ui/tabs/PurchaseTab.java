@@ -2,7 +2,6 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
-import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.ui.PaymentWindow;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
@@ -13,7 +12,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -23,9 +21,9 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
- * labelled "Point-of-sale" in the menu).
+ * labeled "Point-of-sale" in the menu).
  */
-public class PurchaseTab {
+public class PurchaseTab implements ActionListener {
 
 	private static final Logger log = LogManager.getLogger(PurchaseTab.class);
 
@@ -40,6 +38,8 @@ public class PurchaseTab {
 	private PurchaseItemPanel purchasePane;
 
 	private SalesSystemModel model;
+	
+	private PaymentWindow paymentWindow;
 
 	public PurchaseTab(SalesDomainController controller,
 			SalesSystemModel model)
@@ -162,18 +162,9 @@ public class PurchaseTab {
 
 	/** Event handler for the <code>submit purchase</code> event. */
 	protected void submitPurchaseButtonClicked() {
-
-		try {
-			log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
-			domainController.submitCurrentPurchase(
-					model.getCurrentPurchaseTableModel().getTableRows()
-					);
-			new PaymentWindow(this);
-			log.debug("Window open");
-
-		} catch (VerificationFailedException e1) {
-			log.error(e1.getMessage());
-		}
+		log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
+		paymentWindow = new PaymentWindow(model.getCurrentPurchaseTableModel(), this);
+		log.debug("Window open");
 	}
 
 
@@ -190,6 +181,7 @@ public class PurchaseTab {
 		cancelPurchase.setEnabled(true);
 		newPurchase.setEnabled(false);
 	}
+	
 
 	// switch UI to the state that allows to initiate new purchase
 	public void endSale() {
@@ -249,11 +241,23 @@ public class PurchaseTab {
 		model.getCurrentPurchaseTableModel().clear();
 	}
 
-	public double getTotalSum() {
-		return ((SalesDomainControllerImpl)domainController).getTotalSum();
-	}
 
-	public void accept() {
-		clear();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getID() == 0) {
+			// Purchase accepted
+			paymentWindow.close();
+			try {
+				domainController.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows());
+			} catch (VerificationFailedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else if (e.getID() == 1) {
+			// Purchase cancelled
+			paymentWindow.close();
+		}
+		
 	}
+	
 }

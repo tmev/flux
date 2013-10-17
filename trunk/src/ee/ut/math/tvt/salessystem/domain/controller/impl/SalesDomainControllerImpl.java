@@ -17,7 +17,6 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 public class SalesDomainControllerImpl implements SalesDomainController {
 
 	private static final Logger log = LogManager.getLogger(SalesDomainControllerImpl.class);
-	private double totalSum;
 
 	
 	public void submitCurrentPurchase(List<SoldItem> goods)
@@ -29,37 +28,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		//throw new VerificationFailedException("Underaged!");
 
 		// XXX - Save purchase
-		List<SoldItem> saveList = new ArrayList<SoldItem>();
+		log.info("Purchase submited");
 
-		//debug
-		for(int i = 0;i<goods.size();i++){
-			log.debug("I will save: " + goods.get(i).getName());
-		}
-
-		//Saving
-		for(int i = 0;i<goods.size();i++){
-			saveList.add(goods.get(i));
-		}
-
-		//debug  + sum
-		totalSum = 0;
-		for(int i = 0;i<saveList.size();i++){
-			log.debug("Saved  list " + (i+1) + " component is " + saveList.get(i).getName());
-			totalSum += saveList.get(i).getSum(); 
-
-		}
-		log.debug("Sum is " +  totalSum);
-		setTotalSum(totalSum);
-
-
-	}
-
-	public double getTotalSum() {
-		return totalSum;
-	}
-	public void setTotalSum(double totalSum) {
-		log.debug("Set total sum is "+ totalSum);
-		this.totalSum = totalSum;
 	}
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {

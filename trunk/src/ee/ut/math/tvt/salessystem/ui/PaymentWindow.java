@@ -15,121 +15,129 @@ import javax.swing.event.DocumentListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
-
-
+import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
 public class PaymentWindow {
 
-	PurchaseTab purchaseTab;
-
 	private static final Logger log = LogManager.getLogger(PaymentWindow.class);
 
-	public PaymentWindow(PurchaseTab purchaseTab) {
-		this.purchaseTab = purchaseTab;
-		createPaymentWindow();
+	private PurchaseInfoTableModel modelPIT;
+	private double totalSum;
+	private ActionListener parentAL;
+
+	private double payment;
+
+	private JFrame frame;
+	private JPanel panel;
+	private JTextField sumField;
+	private JTextField paymentField;
+	private JTextField changeField;
+	private JButton acceptButton;
+	private JButton cancelButton;
+
+	// Fields update function
+	private void update() {
+		if (!paymentField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
+			changeField.setText("Type error");
+			acceptButton.setEnabled(false);
+			return;
+		}
+
+		payment = Double.parseDouble(paymentField.getText());
+
+		if ((payment - totalSum) >= 0) {
+			changeField.setText(String.valueOf(payment - totalSum));
+			acceptButton.setEnabled(true);
+		} else {
+			changeField.setText("----");
+			acceptButton.setEnabled(false);
+		}
 	}
 
-	//Fields update function
-	private void update(JTextField paymentField, JTextField changeField, JButton button) {
-		try{
-			System.out.println();
-			if (!paymentField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
-				changeField.setText("Type error");
-				button.setEnabled(false);
-				return;
-			}
-			double payment =  Double.parseDouble(paymentField.getText());
-			double sum = purchaseTab.getTotalSum();
-			if((payment-sum)>=0){
-				changeField.setText(String.valueOf(payment-sum));
-				button.setEnabled(true);
-			}
-			else{
-				changeField.setText("----");
-				button.setEnabled(false);
-			}
-		}
-		catch(NumberFormatException ee){
-			button.setEnabled(false);
-			changeField.setText("Type error");		
-		}
+	private void accept() {
+		parentAL.actionPerformed(new ActionEvent(this, 0, "Accept purchase"));
+	}
+
+	private void cancel() {
+		update();
+		frame.dispose();
+		parentAL.actionPerformed(new ActionEvent(this, 1, "Cancel purchase"));
+	}
+
+	public PaymentWindow(PurchaseInfoTableModel modelPIT, ActionListener parentAL) {
+		this.modelPIT = modelPIT;
+		this.parentAL = parentAL;
+		createPaymentWindow();
 	}
 
 	public void createPaymentWindow() {
 
+		totalSum = modelPIT.getTotalSum();
 
-		final JFrame frame = new JFrame("Payment");	
-		JPanel panel = new JPanel();
+		frame = new JFrame("Payment");
+		panel = new JPanel();
 		panel.setLayout(new GridLayout(5, 2));
 
-		//Add sum label and field
+		// Add sum label and field
 
 		panel.add(new JLabel("Total sum:"));
 
-		final String sumText = String.valueOf(purchaseTab.getTotalSum());
-		JTextField sumField = new JTextField(sumText);
+		sumField = new JTextField(String.valueOf(totalSum));
 		sumField.setEditable(false);
 		panel.add(sumField);
 
-		//Add payment label and field
+		// Add payment label and field
 
 		panel.add(new JLabel("Payment amount:"));
 
-		final JTextField paymentField = new JTextField();
+		paymentField = new JTextField();
 		panel.add(paymentField);
 
-		//Add change label and field
+		// Add change label and field
 
 		panel.add(new JLabel("Change amount:"));
 
-		final JTextField changeField = new JTextField();
+		changeField = new JTextField();
 		changeField.setEditable(false);
 		panel.add(changeField);
 
+		// Add accept button
 
-		//Add accept button
-
-		final JButton acceptButton = new JButton("Accept");	
+		acceptButton = new JButton("Accept");
 		acceptButton.setEnabled(false);
 		acceptButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e)
-			{
-				log.debug("Accept click.");
-				purchaseTab.accept();
+			public void actionPerformed(ActionEvent e) {
+				accept();
 			}
-		});    
+		});
 		panel.add(acceptButton);
 
-		//Add cancel button
+		// Add cancel button
 
-		JButton cancelButton = new JButton("Cancel");
+		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e)
-			{
-				update(paymentField, changeField,acceptButton);
-				frame.dispose();
+			public void actionPerformed(ActionEvent e) {
+				cancel();
 			}
-		});    
+		});
 		panel.add(cancelButton);
 
-		//This able to see live calculation of change amount
+		// This able to see live calculation of change amount
 		paymentField.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
-			public void insertUpdate(DocumentEvent e) {	
-				update(paymentField, changeField,acceptButton);
+			public void insertUpdate(DocumentEvent e) {
+				update();
 			}
 
 			@Override
-			public void removeUpdate(DocumentEvent e) {		
-				update(paymentField, changeField,acceptButton);
+			public void removeUpdate(DocumentEvent e) {
+				update();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				update(paymentField, changeField,acceptButton);
+				update();
 			}
 
 		});
@@ -140,6 +148,10 @@ public class PaymentWindow {
 		frame.pack();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
+	}
+
+	public void close() {
+		frame.dispose();
 	}
 
 }
