@@ -250,7 +250,7 @@ public class PurchaseTab implements ActionListener {
 			try {
 				domainController.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows());
 			} catch (VerificationFailedException e1) {
-				// TODO Auto-generated catch block
+				// TODO Inform user that we cannot make a purchase
 				e1.printStackTrace();
 			}
 		} else if (e.getID() == 1) {
