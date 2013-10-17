@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import ee.ut.math.tvt.flux.PaymentWindow;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
@@ -18,7 +17,9 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 public class SalesDomainControllerImpl implements SalesDomainController {
 
 	private static final Logger log = LogManager.getLogger(SalesDomainControllerImpl.class);
-    private static double totalSum;
+	private double totalSum;
+
+	
 	public void submitCurrentPurchase(List<SoldItem> goods)
 			throws VerificationFailedException {
 		// Let's assume we have checked and found out that the buyer is
@@ -49,16 +50,16 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		}
 		log.debug("Sum is " +  totalSum);
 		setTotalSum(totalSum);
-		PaymentWindow.createPaymentWindow();
-		
+
+
 	}
-	
-	public static double getTotalSum() {
+
+	public double getTotalSum() {
 		return totalSum;
 	}
 	public void setTotalSum(double totalSum) {
 		log.debug("Set total sum is "+ totalSum);
-		SalesDomainControllerImpl.totalSum = totalSum;
+		this.totalSum = totalSum;
 	}
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {
@@ -86,6 +87,9 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		dataset.add(chupaChups);
 		dataset.add(frankfurters);
 		dataset.add(beer);
+
 		return dataset;
+
 	}
+	
 }
