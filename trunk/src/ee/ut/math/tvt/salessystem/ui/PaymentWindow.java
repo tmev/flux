@@ -55,12 +55,14 @@ public class PaymentWindow {
 	}
 
 	private void accept() {
+		log.debug("Accept button pressed. Waiting for parent action.");
+		update();
 		parentAL.actionPerformed(new ActionEvent(this, 0, "Accept purchase"));
 	}
 
 	private void cancel() {
+		log.debug("Cancel button pressed. Waiting for parent action.");
 		update();
-		frame.dispose();
 		parentAL.actionPerformed(new ActionEvent(this, 1, "Cancel purchase"));
 	}
 
