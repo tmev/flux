@@ -106,6 +106,7 @@ public class PurchaseItemPanel extends JPanel {
 			}
 
 			public void focusLost(FocusEvent e) {
+				
 			}
 		});
 

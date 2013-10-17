@@ -38,39 +38,57 @@ public class PaymentWindow extends SalesDomainControllerImpl {
 		changeField.setEditable(false);
 		panel.add(changeField);
 
-		
+
 		//This able to see live calculation of change amount
 		paymentField.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {		
-				double payment =  Double.parseDouble(paymentField.getText());
-				double sum = getTotalSum();
-				if((payment-sum)>=0){
-				changeField.setText(String.valueOf(payment-sum));
+				//Typing check
+				try{
+					//Field check
+					try{
+						double payment =  Double.parseDouble(paymentField.getText());
+						double sum = getTotalSum();
+						if((payment-sum)>=0){
+							changeField.setText(String.valueOf(payment-sum));
+						}
+						else{
+							changeField.setText("Payment is insufficient");
+						}
+					}
+					catch(NumberFormatException ee){
+						changeField.setText("Type error");
+					}
+
 				}
-				else{
-					changeField.setText("Payment is insufficient");
+				catch(NumberFormatException ee){
+					changeField.setText("Type error");		
 				}
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {		
-				double payment =  Double.parseDouble(paymentField.getText());
-				double sum = getTotalSum();
-				if((payment-sum)>=0){
-					changeField.setText(String.valueOf(payment-sum));
+				try{
+					double payment =  Double.parseDouble(paymentField.getText());
+					double sum = getTotalSum();
+					if((payment-sum)>=0){
+						changeField.setText(String.valueOf(payment-sum));
 					}
 					else{
 						changeField.setText("Payment is insufficient");
 					}
+				}
+				catch(NumberFormatException ee){
+					changeField.setText("Type error");		
+				}
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {		
 			}
-			 
-			});
+
+		});
 
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.add(panel);
