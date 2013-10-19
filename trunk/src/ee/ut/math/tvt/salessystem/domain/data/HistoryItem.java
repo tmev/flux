@@ -10,8 +10,22 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 
 	public HistoryItem(PurchaseInfoTableModel modelPIT, String date, String time) {
 		this.totalPrice = modelPIT.getTotalSum();
+		this.date = date;
+		this.time = time;
 		
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
 	}
 
 	@Override
