@@ -28,7 +28,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		//throw new VerificationFailedException("Underaged!");
 
 		// XXX - Save purchase
-		log.info("Purchase submited");
+		log.info("Saving purchase");
 
 	}
 
