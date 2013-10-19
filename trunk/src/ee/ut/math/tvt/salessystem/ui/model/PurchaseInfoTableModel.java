@@ -15,7 +15,8 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 	
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = LogManager.getLogger(PurchaseInfoTableModel.class);
+	@SuppressWarnings("unused")
+	private static final Logger log = LogManager.getLogger(PurchaseInfoTableModel.class.getCanonicalName());
 	
 
 	public PurchaseInfoTableModel() {
@@ -66,15 +67,18 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 		try {
 			SoldItem itemInTable = getItemById(item.getId());
 			itemInTable.setQuantity(itemInTable.getQuantity() + item.getQuantity());
-			
 		} catch (NoSuchElementException e) {
 			// This item is not on the list.
 			rows.add(item);
 		}
-		
 		fireTableDataChanged();
 	}
 	
+	/**
+	 * Get total price of current basket.
+	 * 
+	 * @return int, sum of sums for every SoldItem in this table.
+	 */
 	public double getTotalSum() {
 
 		int totalSum = 0;
@@ -84,7 +88,6 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 		while (it.hasNext()) {
 			totalSum += it.next().getSum();
 		}
-		log.debug("Sum is " +  totalSum);
 		
 		return totalSum;
 	}
