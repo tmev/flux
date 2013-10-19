@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
@@ -20,7 +21,6 @@ import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.logging.log4j.LogManager;
@@ -40,14 +40,14 @@ public class PurchaseTab implements ActionListener {
 
 	private PurchaseItemPanel purchasePane;
 
-	private SalesSystemModel model;
+	private SalesSystemModel salesSystemModel;
 	private SalesDomainController domainController;
 	
 	private PaymentWindow paymentWindow;
 
 	public PurchaseTab(SalesSystemModel model, SalesDomainController domainController)
 	{
-		this.model = model;
+		this.salesSystemModel = model;
 		this.domainController = domainController;
 	}
 
@@ -67,7 +67,7 @@ public class PurchaseTab implements ActionListener {
 		panel.add(getPurchaseMenuPane(), getConstraintsForPurchaseMenu());
 
 		// Add the main purchase-panel
-		purchasePane = new PurchaseItemPanel(model);
+		purchasePane = new PurchaseItemPanel(salesSystemModel);
 		purchasePane.setEnabled(false);
 		panel.add(purchasePane, getConstraintsForPurchasePanel());
 
@@ -158,8 +158,8 @@ public class PurchaseTab implements ActionListener {
 			domainController.cancelCurrentPurchase();
 			
 			// Restore warehouse state.
-			PurchaseInfoTableModel modelPIT = model.getCurrentPurchaseTableModel();
-			StockTableModel modelST = model.getWarehouseTableModel();
+			PurchaseInfoTableModel modelPIT = salesSystemModel.getCurrentPurchaseTableModel();
+			StockTableModel modelST = salesSystemModel.getWarehouseTableModel();
 			Iterator<SoldItem> it = modelPIT.getTableRows().iterator();
 			SoldItem currentSoldItem;
 			StockItem currentStockItem;
@@ -170,7 +170,7 @@ public class PurchaseTab implements ActionListener {
 			}
 			
 			// Clear cart
-			model.getCurrentPurchaseTableModel().clear();
+			salesSystemModel.getCurrentPurchaseTableModel().clear();
 			
 			endSale();
 		} catch (VerificationFailedException e1) {
@@ -181,9 +181,8 @@ public class PurchaseTab implements ActionListener {
 
 	/** Event handler for the <code>submit purchase</code> event. */
 	protected void submitPurchaseButtonClicked() {
-		log.info("Sale submitted (needs to be accepted)");
-		log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
-		paymentWindow = new PaymentWindow(model.getCurrentPurchaseTableModel(), this);
+		log.debug("Contents of the current basket:\n" + salesSystemModel.getCurrentPurchaseTableModel());
+		paymentWindow = new PaymentWindow(salesSystemModel.getCurrentPurchaseTableModel(), this);
 		
 		log.debug("Window open");
 	}
@@ -263,15 +262,19 @@ public class PurchaseTab implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getID() == 0) {
 			// Purchase accepted
-			log.info("Sale accepted (needs to be verified)");
 			try {
-				domainController.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows());
-				model.getCurrentPurchaseTableModel().clear();
+				domainController.submitCurrentPurchase(salesSystemModel.getCurrentPurchaseTableModel().getTableRows());
+				String[] now = HistoryItem.timeDate();
+				String date = now[0];
+				String time = now[1];
+				salesSystemModel.getCurrentHistoryTableModel().addItem(new HistoryItem(salesSystemModel.getCurrentPurchaseTableModel(), date, time));
+				salesSystemModel.getCurrentPurchaseTableModel().clear();
 				endSale();
-				paymentWindow.close();
 			} catch (VerificationFailedException e1) {
-				JOptionPane.showMessageDialog(purchasePane, e1.getMessage());
+				// TODO Inform user that we cannot make a purchase
+				e1.printStackTrace();
 			}
+			paymentWindow.close();
 		} else if (e.getID() == 1) {
 			// Purchase cancelled
 			paymentWindow.close();

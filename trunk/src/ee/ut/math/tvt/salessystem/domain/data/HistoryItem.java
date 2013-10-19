@@ -1,5 +1,8 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
 public class HistoryItem implements Cloneable, DisplayableItem {
@@ -38,6 +41,14 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	public String getName() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public static String[] timeDate() {
+
+		Date now = new Date();
+		SimpleDateFormat upDate = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+		String dateTime[] = upDate.format(now).split(" ");
+		return dateTime;
 	}
 
 }

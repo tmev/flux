@@ -24,7 +24,7 @@ public class PaymentWindow {
 	private PurchaseInfoTableModel modelPIT;
 	private double totalSum;
 	private ActionListener parentAL;
-
+	
 	private double payment;
 
 	private JFrame frame;
