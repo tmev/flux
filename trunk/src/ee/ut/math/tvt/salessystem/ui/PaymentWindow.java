@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.ui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -46,7 +47,10 @@ public class PaymentWindow {
 		payment = Double.parseDouble(paymentField.getText());
 
 		if ((payment - totalSum) >= 0) {
-			changeField.setText(String.valueOf(payment - totalSum));
+			DecimalFormat df=new DecimalFormat("0.00");
+			df.format(payment);
+			df.format(totalSum);
+			changeField.setText(String.valueOf(df.format(payment - totalSum)));
 			acceptButton.setEnabled(true);
 		} else {
 			changeField.setText("----");
