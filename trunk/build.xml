@@ -104,13 +104,31 @@
 			<arg value="add" />
 			<arg value="-A" />
 		</exec>
+		
 		<input message="Commit coment" addproperty="commitMsg" />
 		<exec executable="git">
 			<arg value="commit" />
 			<arg value="-m ${commit-message}" />
 		</exec>
+		
 		<exec executable="git">
 			<arg value="push" />
+		</exec>
+	</target>
+	
+	<target name="git_tag" description="Creates a tag">
+		<input message="Tag name: " addproperty="tagName" />
+		<input message="Tag coment: " addproperty="tagComent" />
+
+		<exec executable="git">
+			<arg value="tag" />
+			<arg value="-a ${tagName}" />
+			<arg value="-m ${tagComent}" />
+		</exec>
+		
+		<exec executable="git">
+			<arg value="push" />
+			<arg value="--tags" />
 		</exec>
 	</target>
 		
