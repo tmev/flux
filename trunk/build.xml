@@ -114,7 +114,8 @@
 		<exec executable="git">
 			<arg value="config" />
 			<arg value="--global" />
-			<arg value="push.default simple" />
+			<arg value="push.default" />
+			<arg value="simple" />
 		</exec>
 	</target>
 	
