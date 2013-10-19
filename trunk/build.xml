@@ -97,37 +97,6 @@
 			<entry key="build.number" operation="=" value="${new.build.major.number}.${new.build.minor.number}.${new.build.revision.number}" />
 		</propertyfile>
 	</target>
-	
-	
-	<macrodef name="git">
-			<attribute name="command" />
-			<attribute name="dir" default="" />
-			<element name="args" optional="true" />
-			<sequential>
-				<echo message="git @{command}" />
-				<exec executable="git" dir="@{dir}">
-					<arg value="@{command}" />
-					<args/>
-				</exec>
-			</sequential>
-		</macrodef>
-
-	<target name="git_commit" description="Commits all changes to version git">
-			<input message="Commit message" addproperty="commit-message" />
-			
-			<echo message="Commiting all changes with message ${commit-message}" />
-			<git command="add">
-				<args>
-					<arg value="." />
-				</args>
-			</git>
-			<git command="commit">
-				<args>
-					<arg value="-am ${commit-message}" />
-				</args>
-			</git>
-			<git command="push" />
-	</target>
-	
+		
 </project>
 
