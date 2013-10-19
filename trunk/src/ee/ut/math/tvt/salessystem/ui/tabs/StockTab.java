@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.ui.AddProductWindow;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
@@ -71,7 +72,7 @@ public class StockTab {
 			public void actionPerformed(ActionEvent e)
 			{
 				log.debug("Add click.");
-				new AddProduct(model1.getWarehouseTableModel());
+				new AddProductWindow(model1.getWarehouseTableModel());
 
 			}
 		});    

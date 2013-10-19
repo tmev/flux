@@ -1,4 +1,4 @@
-package ee.ut.math.tvt.salessystem.ui.tabs;
+package ee.ut.math.tvt.salessystem.ui;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -18,9 +18,9 @@ import org.apache.logging.log4j.Logger;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
-public class AddProduct {
+public class AddProductWindow {
 
-	private static final Logger log = LogManager.getLogger(AddProduct.class);
+	private static final Logger log = LogManager.getLogger(AddProductWindow.class);
 
 	private JFrame frame;
 	private JPanel panel;
@@ -39,7 +39,7 @@ public class AddProduct {
 	private String description;
 	private int quantity;
 
-	public AddProduct(StockTableModel stockTableModel) {
+	public AddProductWindow(StockTableModel stockTableModel) {
 		this.stockTableModel = stockTableModel;
 		createAddProductWindow();
 	}
