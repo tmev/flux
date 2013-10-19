@@ -244,8 +244,9 @@ public class PurchaseItemPanel extends JPanel {
 				}
 			} catch (NumberFormatException ex) {
 				log.debug("NumberFormatException: " + ex.getMessage());
-				quantity = 1;
+				JOptionPane.showMessageDialog(this, "Quantity must be positive integer");
 				quantityField.setText("1");
+				return;
 			}
 			if(stockSize-quantity<0){
 				JOptionPane.showMessageDialog(this, "Not enough " + stockItem.getName() +" in the stock");
