@@ -98,17 +98,17 @@
 		</propertyfile>
 	</target>
 	
-	
-	<target name="git_commit" description="Commit and push changes to repo">
+	<target name="git_commit" description="Commit and push changes to repository">
 		<exec executable="git">
 			<arg value="add" />
 			<arg value="-A" />
 		</exec>
 		
 		<input message="Commit coment" addproperty="commitMsg" />
+		<echo message="Commiting all changes with message ${commitMsg}" />
 		<exec executable="git">
 			<arg value="commit" />
-			<arg value="-m ${commit-message}" />
+			<arg value="-m ${commitMsg}" />
 		</exec>
 		
 		<exec executable="git">
