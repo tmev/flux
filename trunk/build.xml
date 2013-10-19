@@ -35,7 +35,7 @@
 	<target name="build" description="Build the system">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.classes.dir}" />
-		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" classpathref="lib.path" includeantruntime="false">
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" classpathref="lib.path" includeantruntime="false" debug="true">
 		</javac>
 	</target>
 
