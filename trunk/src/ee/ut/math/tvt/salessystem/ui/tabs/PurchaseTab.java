@@ -1,9 +1,13 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.PaymentWindow;
+import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 import java.awt.Color;
@@ -12,6 +16,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -27,25 +33,21 @@ public class PurchaseTab implements ActionListener {
 
 	private static final Logger log = LogManager.getLogger(PurchaseTab.class);
 
-	private final SalesDomainController domainController;
-
 	private JButton newPurchase;
-
 	private JButton submitPurchase;
-
 	private JButton cancelPurchase;
 
 	private PurchaseItemPanel purchasePane;
 
 	private SalesSystemModel model;
+	private SalesDomainController domainController;
 	
 	private PaymentWindow paymentWindow;
 
-	public PurchaseTab(SalesDomainController controller,
-			SalesSystemModel model)
+	public PurchaseTab(SalesSystemModel model, SalesDomainController domainController)
 	{
-		this.domainController = controller;
 		this.model = model;
+		this.domainController = domainController;
 	}
 
 
@@ -65,6 +67,7 @@ public class PurchaseTab implements ActionListener {
 
 		// Add the main purchase-panel
 		purchasePane = new PurchaseItemPanel(model);
+		purchasePane.setEnabled(false);
 		panel.add(purchasePane, getConstraintsForPurchasePanel());
 
 		return panel;
@@ -152,8 +155,23 @@ public class PurchaseTab implements ActionListener {
 		log.info("Sale cancelled");
 		try {
 			domainController.cancelCurrentPurchase();
-			endSale();
+			
+			// Restore warehouse state.
+			PurchaseInfoTableModel modelPIT = model.getCurrentPurchaseTableModel();
+			StockTableModel modelST = model.getWarehouseTableModel();
+			Iterator<SoldItem> it = modelPIT.getTableRows().iterator();
+			SoldItem currentSoldItem;
+			StockItem currentStockItem;
+			while (it.hasNext()) {
+				currentSoldItem = it.next();
+				currentStockItem = modelST.getItemById(currentSoldItem.getId());
+				currentStockItem.setQuantity(currentStockItem.getQuantity() + currentSoldItem.getQuantity());
+			}
+			
+			// Clear cart
 			model.getCurrentPurchaseTableModel().clear();
+			
+			endSale();
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
@@ -237,22 +255,20 @@ public class PurchaseTab implements ActionListener {
 		return gc;
 	}
 
-	public void clear(){
-		model.getCurrentPurchaseTableModel().clear();
-	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getID() == 0) {
 			// Purchase accepted
-			paymentWindow.close();
 			try {
 				domainController.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows());
+				model.getCurrentPurchaseTableModel().clear();
+				endSale();
 			} catch (VerificationFailedException e1) {
 				// TODO Inform user that we cannot make a purchase
 				e1.printStackTrace();
 			}
+			paymentWindow.close();
 		} else if (e.getID() == 1) {
 			// Purchase cancelled
 			paymentWindow.close();
