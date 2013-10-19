@@ -1,5 +1,8 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,10 +12,13 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
  * Purchase history details model.
  */
 public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
+	
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = LogManager.getLogger(PurchaseInfoTableModel.class);
+	@SuppressWarnings("unused")
+	private static final Logger log = LogManager.getLogger(PurchaseInfoTableModel.class.getCanonicalName());
 	
+
 	public PurchaseInfoTableModel() {
 		super(new String[] { "Id", "Name", "Price", "Quantity", "Sum"});
 	}
@@ -30,7 +36,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 			return item.getQuantity();
 		case 4:
 			return item.getSum();
-	}
+		}
 		throw new IllegalArgumentException("Column index out of range");
 	}
 
@@ -53,18 +59,38 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
 		return buffer.toString();
 	}
+
+	/**
+	 * Add new StockItem to table.
+	 */
+	public void addItem(final SoldItem item) {
+		try {
+			SoldItem itemInTable = getItemById(item.getId());
+			itemInTable.setQuantity(itemInTable.getQuantity() + item.getQuantity());
+		} catch (NoSuchElementException e) {
+			// This item is not on the list.
+			rows.add(item);
+		}
+		fireTableDataChanged();
+	}
 	
-    /**
-     * Add new StockItem to table.
-     */
-    public void addItem(final SoldItem item) {
-        /**
-         * XXX In case such stockItem already exists increase the quantity of the
-         * existing stock.
-         */
-        
-        rows.add(item);
-        log.debug("Added " + item.getName() + " quantity of " + item.getQuantity() + " sum is: " + item.getSum() );
-        fireTableDataChanged();
-    }
+	/**
+	 * Get total price of current basket.
+	 * 
+	 * @return int, sum of sums for every SoldItem in this table.
+	 */
+	public double getTotalSum() {
+
+		int totalSum = 0;
+		
+		Iterator<SoldItem> it = rows.iterator();
+		
+		while (it.hasNext()) {
+			totalSum += it.next().getSum();
+		}
+		
+		return totalSum;
+	}
+	
 }
+

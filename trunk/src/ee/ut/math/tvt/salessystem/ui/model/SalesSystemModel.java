@@ -1,24 +1,23 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 
 /**
  * Main model. Holds all the other models.
  */
 public class SalesSystemModel {
-    
-    private static final Logger log = LogManager.getLogger(SalesSystemModel.class);
 
     // Warehouse model
     private StockTableModel warehouseTableModel;
     
     // Current shopping cart model
     private PurchaseInfoTableModel currentPurchaseTableModel;
+    
+    // History model
+    private HistoryTableModel currentHistoryTableModel;
 
-    private final SalesDomainController domainController;
+	@SuppressWarnings("unused")
+	private final SalesDomainController domainController;
 
     /**
      * Construct application model.
@@ -29,6 +28,7 @@ public class SalesSystemModel {
         
         warehouseTableModel = new StockTableModel();
         currentPurchaseTableModel = new PurchaseInfoTableModel();
+        currentHistoryTableModel = new HistoryTableModel();
 
         // populate stock model with data from the warehouse
         warehouseTableModel.populateWithData(domainController.loadWarehouseState());
@@ -42,5 +42,9 @@ public class SalesSystemModel {
     public PurchaseInfoTableModel getCurrentPurchaseTableModel() {
         return currentPurchaseTableModel;
     }
+    
+    public HistoryTableModel getCurrentHistoryTableModel() {
+		return currentHistoryTableModel;
+	}
     
 }

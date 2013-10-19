@@ -69,7 +69,7 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
     public List<T> getTableRows() {
         return rows;
     }
-
+    
     public void clear() {
         rows = new ArrayList<T>();
         fireTableDataChanged();
