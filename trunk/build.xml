@@ -127,6 +127,9 @@
 				</args>
 			</git>
 			<git command="push" />
+					<args>
+						<arg value="simple" />
+					</args>
 	</target>
 		
 </project>
