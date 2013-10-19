@@ -164,6 +164,7 @@ public class PurchaseTab implements ActionListener {
 	protected void submitPurchaseButtonClicked() {
 		log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
 		paymentWindow = new PaymentWindow(model.getCurrentPurchaseTableModel(), this);
+		
 		log.debug("Window open");
 	}
 
