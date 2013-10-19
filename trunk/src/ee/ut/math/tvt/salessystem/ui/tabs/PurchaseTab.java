@@ -20,6 +20,7 @@ import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.logging.log4j.LogManager;
@@ -180,6 +181,7 @@ public class PurchaseTab implements ActionListener {
 
 	/** Event handler for the <code>submit purchase</code> event. */
 	protected void submitPurchaseButtonClicked() {
+		log.info("Sale submitted (needs to be accepted)");
 		log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
 		paymentWindow = new PaymentWindow(model.getCurrentPurchaseTableModel(), this);
 		
@@ -261,15 +263,15 @@ public class PurchaseTab implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getID() == 0) {
 			// Purchase accepted
+			log.info("Sale accepted (needs to be verified)");
 			try {
 				domainController.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows());
 				model.getCurrentPurchaseTableModel().clear();
 				endSale();
+				paymentWindow.close();
 			} catch (VerificationFailedException e1) {
-				// TODO Inform user that we cannot make a purchase
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(purchasePane, e1.getMessage());
 			}
-			paymentWindow.close();
 		} else if (e.getID() == 1) {
 			// Purchase cancelled
 			paymentWindow.close();
