@@ -3,13 +3,11 @@ package ee.ut.math.tvt.salessystem.ui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,7 +58,7 @@ public class AddProductWindow {
 
 		idField = new JTextField();
 		panel.add(idField);
-
+		
 		panel.add(new JLabel("Name"));
 
 		nameField = new JTextField();
@@ -125,7 +123,6 @@ public class AddProductWindow {
 				}
 			}
 		});
-
 		panel.add(addButton);
 		panel.add(cancelButton);
 
@@ -144,9 +141,9 @@ public class AddProductWindow {
 		int count = 0;
 		JTextField[] fields = { idField, nameField, descField, priceField,
 				quanityField };
-		String[] namez = { "idField", "nameField", "descField", "priceField",
-				"quanityField" };
-		int[] numCheck = { 0, 3, 4 };
+		String[] namez = { "Id", "Name", "Description", "Price",
+				"Quanity" };
+		int[] numCheck = {0,3, 4 };
 		for (int i = 0; i < fields.length; i++) {
 			if (!fields[i].getText().isEmpty()
 					&& !fields[i].getText().trim().isEmpty()) {
@@ -166,6 +163,11 @@ public class AddProductWindow {
 						return;
 					}
 				}
+				if (!idField.getText().matches("[\\d]")){
+					infoField.setText("Wrong id");
+					count = 0;
+					return;
+				}
 				id = Long.parseLong(idField.getText().trim());
 				price = Double.parseDouble(priceField.getText().trim());
 				quantity = Integer.parseInt(quanityField.getText().trim());
@@ -177,6 +179,7 @@ public class AddProductWindow {
 				stockItem.setQuantity(quantity);
 
 				for (JTextField field : fields) {
+					field.setText(field.getText().trim());
 					field.setEditable(false);
 				}
 				checkDone = true;
