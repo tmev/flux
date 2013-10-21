@@ -113,7 +113,7 @@
 		
 		<exec executable="git">
 			<arg value="push" />
-			<arg value="master" />
+			<arg value="flux" />
 		</exec>
 	</target>
 	
