@@ -18,7 +18,7 @@ public class AddProductWindow {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LogManager
-			.getLogger(AddProductWindow.class);
+	.getLogger(AddProductWindow.class);
 
 	public StockItem stockItem;
 	private StockTableModel stockTableModel;
@@ -145,9 +145,9 @@ public class AddProductWindow {
 				quanityField };
 
 		String[] fieldNames = { "Id", "Name", "Description", "Price", "Quanity" };
-
-		// What fields should be numeric
-		int[] numCheck = { 0, 3, 4 };
+		
+		//Fields with indexes from numCheck should contain only whole numbers
+		Integer[] numCheck = {0,4};
 
 		for (int i = 0; i < fields.length; i++) {
 			if (!fields[i].getText().isEmpty()
@@ -166,21 +166,22 @@ public class AddProductWindow {
 				name = nameField.getText().trim();
 				description = descField.getText().trim();
 
-				// Check input in numeric fields
-				for (int j : numCheck) {
-					if (!fields[j].getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
-						infoField.setText(fieldNames[j] + " not numeric");
+				// Id and quantity fields should contain only whole numbers
+				for(int j : numCheck){				
+					if(!fields[j].getText().matches("[1-9]+[0-9]*")) {
+						infoField.setText(fieldNames[j] + " is wrong");
 						nonEmptyFieldsCount = 0;
 						return;
 					}
 				}
-
-				// Id should be whole number
-				if (!idField.getText().matches("[\\d]")) {
-					infoField.setText("Wrong id");
+				
+				//Price field should contain any double
+				if(!priceField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
+					infoField.setText("Price is wrong");
 					nonEmptyFieldsCount = 0;
 					return;
 				}
+
 				id = Long.parseLong(idField.getText().trim());
 				price = Double.parseDouble(priceField.getText().trim());
 				quantity = Integer.parseInt(quanityField.getText().trim());
