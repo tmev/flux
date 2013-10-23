@@ -3,15 +3,11 @@ package ee.ut.math.tvt.salessystem.ui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,19 +16,27 @@ import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
 public class AddProductWindow {
 
-	private static final Logger log = LogManager.getLogger(AddProductWindow.class);
+	@SuppressWarnings("unused")
+	private static final Logger log = LogManager
+			.getLogger(AddProductWindow.class);
+
+	public StockItem stockItem;
+	private StockTableModel stockTableModel;
 
 	private JFrame frame;
 	private JPanel panel;
-	private JTextField idField;
+
 	private JButton addButton;
 	private JButton cancelButton;
+
+	private JTextField idField;
 	private JTextField nameField;
 	private JTextField priceField;
 	private JTextField descField;
-	public StockItem stockItem;
 	private JTextField quanityField;
-	private StockTableModel stockTableModel;
+	private JTextField infoField;
+
+	private boolean checkDone;
 	private Long id;
 	private String name;
 	private double price;
@@ -45,218 +49,88 @@ public class AddProductWindow {
 	}
 
 	public void createAddProductWindow() {
-		log.debug("Started");
 		stockItem = new StockItem();
-
 		frame = new JFrame("Add product");
 		panel = new JPanel();
 
-		panel.setLayout(new GridLayout(6, 2));
-
-		// Add sum label and field
+		panel.setLayout(new GridLayout(7, 2));
 
 		panel.add(new JLabel("Id"));
 
 		idField = new JTextField();
 		panel.add(idField);
-		idField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if (!idField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
-					addButton.setEnabled(false);
-					return;
-				}
-				id = Long.parseLong(idField.getText());
-				stockItem.setId(id);
-				addButton.setEnabled(true);
-
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if (!idField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
-					addButton.setEnabled(false);
-					return;
-				}
-				id = Long.parseLong(idField.getText());
-				stockItem.setId(id);
-				addButton.setEnabled(true);
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-
-			}
-
-		});
 
 		panel.add(new JLabel("Name"));
 
 		nameField = new JTextField();
 		panel.add(nameField);
-		nameField.getDocument().addDocumentListener(new DocumentListener() {
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if (nameField.getText() != null
-						&& !nameField.getText().isEmpty()) {
-					name = nameField.getText();
-					stockItem.setName(name);
-					addButton.setEnabled(true);
-				} else {
-					addButton.setEnabled(false);
-				}
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if (nameField.getText() != null
-						&& !nameField.getText().isEmpty()) {
-					name = nameField.getText();
-					stockItem.setName(name);
-					addButton.setEnabled(true);
-				} else {
-					addButton.setEnabled(false);
-				}
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-
-			}
-
-		});
 
 		panel.add(new JLabel("Description"));
 
 		descField = new JTextField();
 		panel.add(descField);
-		descField.getDocument().addDocumentListener(new DocumentListener() {
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if (descField.getText() != null
-						&& !nameField.getText().isEmpty()) {
-					description = descField.getText();
-					stockItem.setDescription(description);
-					addButton.setEnabled(true);
-				} else {
-					addButton.setEnabled(false);
-				}
-
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if (descField.getText() != null
-						&& !descField.getText().isEmpty()) {
-					description = descField.getText();
-					stockItem.setDescription(description);
-					addButton.setEnabled(true);
-				} else {
-					addButton.setEnabled(false);
-				}
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-
-			}
-
-		});
 
 		panel.add(new JLabel("Price"));
 
 		priceField = new JTextField();
 		panel.add(priceField);
-		priceField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if (!priceField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
-					addButton.setEnabled(false);
-					return;
-				}
-				price = Double.parseDouble(priceField.getText());
-				stockItem.setPrice(price);
-				addButton.setEnabled(true);
-			}
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if (!priceField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
-					addButton.setEnabled(false);
-					return;
-				}
-				price = Double.parseDouble(priceField.getText());
-				stockItem.setPrice(price);
-				addButton.setEnabled(true);
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-
-			}
-
-		});
-
-		panel.add(new JLabel("Quanity"));
+		panel.add(new JLabel("Quantity"));
 
 		quanityField = new JTextField();
 		panel.add(quanityField);
-		quanityField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if (!quanityField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
-					addButton.setEnabled(false);
-					return;
-				}
-				quantity = Integer.parseInt(quanityField.getText());
-				stockItem.setQuantity(quantity);
-				addButton.setEnabled(true);
 
-			}
+		panel.add(new JLabel("Information"));
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if (!quanityField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
-					return;
-				}
-				quantity = Integer.parseInt(quanityField.getText());
-				stockItem.setQuantity(quantity);
-			}
+		infoField = new JTextField();
+		infoField.setEditable(false);
+		infoField.setText("----");
+		panel.add(infoField);
 
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-
-			}
-
-		});
-		addButton = new JButton("Add");
-		addButton.setEnabled(false);
+		addButton = new JButton("Check");
 
 		addButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				if (stockItem != null) {
+				check();
+				if (infoField.getText().equals("OK")) {
 					stockTableModel.addItem(stockItem);
+
 				}
+				if (checkDone) {
+					infoField.setText("OK");
+					addButton.setText("Add");
+					cancelButton.setText("Change");
+				}
+
 			}
 
 		});
+
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				close();
+				if (checkDone) {
+					JTextField[] fields = { idField, nameField, descField,
+							priceField, quanityField };
+					for (JTextField field : fields) {
+						field.setEditable(true);
+					}
+					infoField.setText("----");
+					cancelButton.setText("Cancel");
+					addButton.setText("Check");
+					checkDone = false;
+				} else {
+					close();
+				}
 			}
 		});
-
 		panel.add(addButton);
 		panel.add(cancelButton);
 
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.add(panel);
-		frame.setSize(100, 200);
-		frame.pack();
+		frame.setSize(280, 200);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 	}
@@ -265,4 +139,65 @@ public class AddProductWindow {
 		frame.dispose();
 	}
 
+	public void check() {
+		int nonEmptyFieldsCount = 0;
+		JTextField[] fields = { idField, nameField, descField, priceField,
+				quanityField };
+
+		String[] fieldNames = { "Id", "Name", "Description", "Price", "Quanity" };
+
+		// What fields should be numeric
+		int[] numCheck = { 0, 3, 4 };
+
+		for (int i = 0; i < fields.length; i++) {
+			if (!fields[i].getText().isEmpty()
+					&& !fields[i].getText().trim().isEmpty()) {
+				nonEmptyFieldsCount++;
+			} else {
+				infoField.setText((fieldNames[i] + " is empty"));
+				nonEmptyFieldsCount = 0;
+				return;
+			}
+
+			// If all fields are not empty
+			if (nonEmptyFieldsCount == 5) {
+
+				// Name and description are acceptable in any format
+				name = nameField.getText().trim();
+				description = descField.getText().trim();
+
+				// Check input in numeric fields
+				for (int j : numCheck) {
+					if (!fields[j].getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
+						infoField.setText(fieldNames[j] + " not numeric");
+						nonEmptyFieldsCount = 0;
+						return;
+					}
+				}
+
+				// Id should be whole number
+				if (!idField.getText().matches("[\\d]")) {
+					infoField.setText("Wrong id");
+					nonEmptyFieldsCount = 0;
+					return;
+				}
+				id = Long.parseLong(idField.getText().trim());
+				price = Double.parseDouble(priceField.getText().trim());
+				quantity = Integer.parseInt(quanityField.getText().trim());
+
+				stockItem.setId(id);
+				stockItem.setName(name);
+				stockItem.setDescription(description);
+				stockItem.setPrice(price);
+				stockItem.setQuantity(quantity);
+
+				// Prepare item to save, clean whitespace in fields
+				for (JTextField field : fields) {
+					field.setText(field.getText().trim());
+					field.setEditable(false);
+				}
+				checkDone = true;
+			}
+		}
+	}
 }
