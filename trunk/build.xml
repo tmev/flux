@@ -113,7 +113,6 @@
 		
 		<exec executable="git">
 			<arg value="push" />
-			<arg value="origin master" />
 		</exec>
 	</target>
 	
