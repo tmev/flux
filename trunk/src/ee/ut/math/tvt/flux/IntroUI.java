@@ -118,11 +118,14 @@ public class IntroUI extends JFrame implements MouseMotionListener,
 				+ appProp.getProperty("teamName"));
 		JLabel teamLeader = new JLabel("Team leader: "
 				+ appProp.getProperty("teamLeader"));
+		JLabel teamLeaderEmail = new JLabel("Team Leader Email: "
+				+ appProp.getProperty("teamLeaderEmail"));
 		JLabel version = new JLabel(versProp.getProperty("build.number"));
 		String[] members = appProp.getProperty("teamMembers").split(", ");
 
 		p.add(teamName);
 		p.add(teamLeader);
+		p.add(teamLeaderEmail);
 		p.add(version);
 
 		Dimension size = teamName.getPreferredSize();
