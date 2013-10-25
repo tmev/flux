@@ -8,12 +8,18 @@ import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.ui.HistoryPaymentDetailedWindow;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 /**
@@ -22,10 +28,11 @@ import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
  */
 public class HistoryTab {
 	
-	private SalesSystemModel saleSystemModel;
+	private SalesSystemModel salesSystemModel;
+	private static final Logger log = LogManager.getLogger(PurchaseTab.class);
 
-    public HistoryTab(SalesSystemModel saleSystemModel) {
-    	this.saleSystemModel = saleSystemModel;
+    public HistoryTab(SalesSystemModel salesSystemModel) {
+    	this.salesSystemModel = salesSystemModel;
     } 
     
     public Component draw() {
@@ -75,12 +82,16 @@ public class HistoryTab {
     private Component drawStockMainPane() {
         JPanel panel = new JPanel();
 
-        JTable table = new JTable(saleSystemModel.getCurrentHistoryTableModel());
+        JTable table = new JTable(salesSystemModel.getCurrentHistoryTableModel());
 
         JTableHeader header = table.getTableHeader();
         header.setReorderingAllowed(false);
 
         JScrollPane scrollPane = new JScrollPane(table);
+        
+        TableCellRenderer buttonRenderer = new JTableButtonRenderer();
+        table.getColumnModel().getColumn(3).setCellRenderer(buttonRenderer);
+        table.addMouseListener(new JTableButtonMouseListener(table));
 
         GridBagConstraints gc = new GridBagConstraints();
         GridBagLayout gb = new GridBagLayout();

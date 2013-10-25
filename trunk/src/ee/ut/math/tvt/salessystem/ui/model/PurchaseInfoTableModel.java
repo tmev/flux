@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -90,6 +91,20 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 		}
 		
 		return totalSum;
+	}
+	
+	public ArrayList<SoldItem> getAllRows() {
+		
+		ArrayList<SoldItem> shoppingCartRows = new ArrayList<SoldItem>();
+		
+		Iterator<SoldItem> it = rows.iterator();
+		
+		while (it.hasNext()) {
+			shoppingCartRows.add(it.next());
+		}
+		
+		return shoppingCartRows;
+		
 	}
 	
 }
