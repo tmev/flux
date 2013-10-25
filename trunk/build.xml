@@ -129,7 +129,7 @@
 		
 		<exec executable="git">
 			<arg value="push" />
-			<arg value="--tags" />
+			<arg value=" origin --tags" />
 		</exec>
 	</target>
 		

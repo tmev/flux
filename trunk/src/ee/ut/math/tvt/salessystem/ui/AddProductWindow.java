@@ -18,20 +18,24 @@ public class AddProductWindow {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LogManager
-			.getLogger(AddProductWindow.class);
+	.getLogger(AddProductWindow.class);
+
+	public StockItem stockItem;
+	private StockTableModel stockTableModel;
 
 	private JFrame frame;
 	private JPanel panel;
-	private JTextField idField;
+
 	private JButton addButton;
 	private JButton cancelButton;
+
+	private JTextField idField;
 	private JTextField nameField;
 	private JTextField priceField;
 	private JTextField descField;
-	public StockItem stockItem;
 	private JTextField quanityField;
 	private JTextField infoField;
-	private StockTableModel stockTableModel;
+
 	private boolean checkDone;
 	private Long id;
 	private String name;
@@ -42,7 +46,6 @@ public class AddProductWindow {
 	public AddProductWindow(StockTableModel stockTableModel) {
 		this.stockTableModel = stockTableModel;
 		createAddProductWindow();
-
 	}
 
 	public void createAddProductWindow() {
@@ -52,13 +55,11 @@ public class AddProductWindow {
 
 		panel.setLayout(new GridLayout(7, 2));
 
-		// Add sum label and field
-
 		panel.add(new JLabel("Id"));
 
 		idField = new JTextField();
 		panel.add(idField);
-		
+
 		panel.add(new JLabel("Name"));
 
 		nameField = new JTextField();
@@ -74,7 +75,7 @@ public class AddProductWindow {
 		priceField = new JTextField();
 		panel.add(priceField);
 
-		panel.add(new JLabel("Quanity"));
+		panel.add(new JLabel("Quantity"));
 
 		quanityField = new JTextField();
 		panel.add(quanityField);
@@ -105,6 +106,7 @@ public class AddProductWindow {
 			}
 
 		});
+
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -138,36 +140,48 @@ public class AddProductWindow {
 	}
 
 	public void check() {
-		int count = 0;
+		int nonEmptyFieldsCount = 0;
 		JTextField[] fields = { idField, nameField, descField, priceField,
 				quanityField };
-		String[] namez = { "Id", "Name", "Description", "Price",
-				"Quanity" };
-		int[] numCheck = {0,3, 4 };
+
+		String[] fieldNames = { "Id", "Name", "Description", "Price", "Quanity" };
+		
+		//Fields with indexes from numCheck should contain only whole numbers
+		Integer[] numCheck = {0,4};
+
 		for (int i = 0; i < fields.length; i++) {
 			if (!fields[i].getText().isEmpty()
 					&& !fields[i].getText().trim().isEmpty()) {
-				count++;
+				nonEmptyFieldsCount++;
 			} else {
-				infoField.setText((namez[i] + " is empty"));
-				count = 0;
+				infoField.setText((fieldNames[i] + " is empty"));
+				nonEmptyFieldsCount = 0;
 				return;
 			}
-			if (count == 5) {
+
+			// If all fields are not empty
+			if (nonEmptyFieldsCount == 5) {
+
+				// Name and description are acceptable in any format
 				name = nameField.getText().trim();
 				description = descField.getText().trim();
-				for (int j : numCheck) {
-					if (!fields[j].getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
-						infoField.setText(namez[j] + " not numeric");
-						count = 0;
+
+				// Id and quantity fields should contain only whole numbers
+				for(int j : numCheck){				
+					if(!fields[j].getText().matches("[1-9]+[0-9]*")) {
+						infoField.setText(fieldNames[j] + " is wrong");
+						nonEmptyFieldsCount = 0;
 						return;
 					}
 				}
-				if (!idField.getText().matches("[\\d]")){
-					infoField.setText("Wrong id");
-					count = 0;
+				
+				//Price field should contain any double
+				if(!priceField.getText().matches("[\\d]+(?:\\.[\\d]*)?")) {
+					infoField.setText("Price is wrong");
+					nonEmptyFieldsCount = 0;
 					return;
 				}
+
 				id = Long.parseLong(idField.getText().trim());
 				price = Double.parseDouble(priceField.getText().trim());
 				quantity = Integer.parseInt(quanityField.getText().trim());
@@ -178,6 +192,7 @@ public class AddProductWindow {
 				stockItem.setPrice(price);
 				stockItem.setQuantity(quantity);
 
+				// Prepare item to save, clean whitespace in fields
 				for (JTextField field : fields) {
 					field.setText(field.getText().trim());
 					field.setEditable(false);
