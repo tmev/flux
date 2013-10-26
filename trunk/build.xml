@@ -87,13 +87,13 @@
 
 	<target name="increaseRevision" description="Increase revision and update version.properties.">
 
-		<propertyfile file="version.properties" comment="Version properties">
+		<propertyfile file="version.properties" coment="Version properties">
 			<entry key="build.revision.number" type="int" default="0" operation="+" />
 		</propertyfile>
 
 		<property file="version.properties" prefix="new" />
 
-		<propertyfile file="version.properties" comment="Version properties">
+		<propertyfile file="version.properties" coment="Version properties">
 			<entry key="build.number" operation="=" value="${new.build.major.number}.${new.build.minor.number}.${new.build.revision.number}" />
 		</propertyfile>
 	</target>

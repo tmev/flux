@@ -1,42 +1,44 @@
-package ee.ut.math.tvt.salessystem.ui.tabs;
+package ee.ut.math.tvt.salessystem.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.ui.HistoryPaymentDetailedWindow;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.ui.model.HistoryPaymentDetailedWindowTableModel;
+import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
-/**
- * Encapsulates everything that has to do with the purchase tab (the tab
- * labelled "History" in the menu).
- */
-public class HistoryTab {
+public class HistoryPaymentDetailedWindow {
 	
-	private SalesSystemModel salesSystemModel;
-	private static final Logger log = LogManager.getLogger(PurchaseTab.class);
+	private static final Logger log = LogManager.getLogger(PaymentWindow.class);
+	
+	private JFrame frame;
+	private HistoryPaymentDetailedWindowTableModel HistoryPaymentDetailedWindowTableModel;
 
-    public HistoryTab(SalesSystemModel salesSystemModel) {
-    	this.salesSystemModel = salesSystemModel;
-    } 
-    
+	public HistoryPaymentDetailedWindow(HistoryPaymentDetailedWindowTableModel HistoryPaymentDetailedWindowTableModel, ArrayList<SoldItem> orderDetails) {
+    	this.HistoryPaymentDetailedWindowTableModel = HistoryPaymentDetailedWindowTableModel;
+		draw();
+		HistoryPaymentDetailedWindowTableModel.populateWithData(orderDetails);
+		
+	}
+
+	
     public Component draw() {
-    		
+		
+		frame = new JFrame("Order details");
         JPanel panel = new JPanel();
         
         panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -56,10 +58,18 @@ public class HistoryTab {
         gc.weighty = 1.0;
         gc.fill = GridBagConstraints.BOTH;
         panel.add(drawStockMainPane(), gc);
-        return panel;
+        
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.add(panel);
+		frame.setSize(100, 200);
+		frame.pack();
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		
+        return frame;
     }
     
- // history menu
+    // history menu
     private Component drawStockMenuPane() {
       JPanel panel = new JPanel();
 
@@ -77,21 +87,17 @@ public class HistoryTab {
       panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
       return panel;
     }
-   
+    
  // table of the history stock
     private Component drawStockMainPane() {
         JPanel panel = new JPanel();
 
-        JTable table = new JTable(salesSystemModel.getCurrentHistoryTableModel());
+        JTable table = new JTable(HistoryPaymentDetailedWindowTableModel);
 
         JTableHeader header = table.getTableHeader();
         header.setReorderingAllowed(false);
 
         JScrollPane scrollPane = new JScrollPane(table);
-        
-        TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-        table.getColumnModel().getColumn(3).setCellRenderer(buttonRenderer);
-        table.addMouseListener(new JTableButtonMouseListener(table));
 
         GridBagConstraints gc = new GridBagConstraints();
         GridBagLayout gb = new GridBagLayout();
@@ -102,7 +108,8 @@ public class HistoryTab {
         panel.setLayout(gb);
         panel.add(scrollPane, gc);
 
-        panel.setBorder(BorderFactory.createTitledBorder("History status"));
+        panel.setBorder(BorderFactory.createTitledBorder("Order details"));
         return panel;
       }
+
 }

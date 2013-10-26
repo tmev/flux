@@ -17,6 +17,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -267,7 +268,9 @@ public class PurchaseTab implements ActionListener {
 				String[] now = HistoryItem.timeDate();
 				String date = now[0];
 				String time = now[1];
-				salesSystemModel.getCurrentHistoryTableModel().addItem(new HistoryItem(salesSystemModel.getCurrentPurchaseTableModel(), date, time));
+				//add info to save
+				ArrayList<SoldItem> shoppingCartRows = salesSystemModel.getCurrentPurchaseTableModel().getAllRows();
+				salesSystemModel.getCurrentHistoryTableModel().addItem(new HistoryItem(salesSystemModel.getCurrentPurchaseTableModel(), date, time, shoppingCartRows));
 				salesSystemModel.getCurrentPurchaseTableModel().clear();
 				endSale();
 			} catch (VerificationFailedException e1) {
