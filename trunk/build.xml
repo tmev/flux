@@ -110,16 +110,12 @@
 			<arg value="commit" />
 			<arg value="-m ${commitMsg}" />
 		</exec>
-		
-		<exec executable="git">
-			<arg value="push" />
-		</exec>
-	</target>
-	
-	<target name="git_push" description="Push changet to github">
+
+		<input message="Name:" addproperty="name" />
+		<input message="Password:" addproperty="pas"/>
 		<exec executable="git">
 			<arg value="push"/>
-			<arg value="--flux"/>
+			<arg value="https://${name}:${pas}@github.com/sergeijakovlev/flux.git"/>
 		</exec>
 	</target>
 	
@@ -135,7 +131,7 @@
 		
 		<exec executable="git">
 			<arg value="push" />
-			<arg value=" origin --tags" />
+			<arg value="--tags" />
 		</exec>
 	</target>
 		
