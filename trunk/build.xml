@@ -112,9 +112,7 @@
 		</exec>
 
 		<input message="Name:" addproperty="name" />
-		<input message="Password:" addproperty="pas">
-			<handler type="secure"/>
-		</input>
+		<input message="Password:" addproperty="pas" />
 		<exec executable="git">
 			<arg value="push"/>
 			<arg value="https://${name}:${pas}@github.com/sergeijakovlev/flux.git"/>
