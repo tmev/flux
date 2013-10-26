@@ -111,8 +111,12 @@
 			<arg value="-m ${commitMsg}" />
 		</exec>
 
-		<input message="Name:" addproperty="name" />
-		<input message="Password:" addproperty="pas" />
+		 <antform title="User data">
+		 	<label>Please enter your user name and password.</label>
+		    <textProperty label="User name:" property="name" required="true" />
+		    <textProperty label="User password:" property="pas" required="true" password="true" />
+		 </antform>
+		
 		<exec executable="git">
 			<arg value="push"/>
 			<arg value="https://${name}:${pas}@github.com/sergeijakovlev/flux.git"/>
