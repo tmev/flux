@@ -103,16 +103,14 @@
 			<arg value="add" />
 			<arg value="-A" />
 		</exec>
-		
 		<input message="Commit coment" addproperty="commitMsg" />
 		<echo message="Commiting all changes with message ${commitMsg}" />
 		<exec executable="git">
 			<arg value="commit" />
 			<arg value="-m ${commitMsg}" />
 		</exec>
-
 		<input message="Name:" addproperty="name" />
-		<input message="Password:" addproperty="pas" password="true"/>
+		<input message="Password:" addproperty="pas" />
 		<exec executable="git">
 			<arg value="push"/>
 			<arg value="https://${name}:${pas}@github.com/sergeijakovlev/flux.git"/>
@@ -120,9 +118,10 @@
 	</target>
 	
 	<target name="git_tag" description="Creates a tag">
+		<input message="Name:" addproperty="namefortag" />
+		<input message="Password:" addproperty="pasfortag" />
 		<input message="Tag name:" addproperty="tagName" />
 		<input message="Tag coment:" addproperty="tagComent" />
-
         <exec executable="git">
                 <arg value="tag" />
                 <arg value="-a" />
@@ -130,13 +129,11 @@
                 <arg value="-m" />
                 <arg value="${tagComent}" />
         </exec>
-
         <exec executable="git">
                 <arg value="push" />
-                <arg value="origin" />
+        	<arg value="https://${namefortag}:${pasfortag}@github.com/sergeijakovlev/flux.git"/>
                 <arg value="--tags" />
         </exec>
-
 	</target>
 		
 </project>
