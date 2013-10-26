@@ -116,6 +116,13 @@
 		</exec>
 	</target>
 	
+	<target name="git_push" description="Push changet to github">
+		<exec executable="git">
+			<arg value="push"/>
+			<arg value="--flux"/>
+		</exec>
+	</target>
+	
 	<target name="git_tag" description="Creates a tag">
 		<input message="Tag name: " addproperty="tagName" />
 		<input message="Tag coment: " addproperty="tagComent" />
