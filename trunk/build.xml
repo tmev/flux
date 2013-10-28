@@ -182,7 +182,7 @@
 	        </java>
 	    </target>
 
-	    <target name="startdb" description="Start the HSQLDB with the default params">
+	<target name="startdb" description="Start the HSQLDB with the default params">
 	        <java
 	            classname="org.hsqldb.Server"
 	            classpathref="run.classpath"
