@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.swing.JButton;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +17,9 @@ import ee.ut.math.tvt.salessystem.ui.AddProductWindow;
 import ee.ut.math.tvt.salessystem.ui.HistoryPaymentDetailedWindow;
 import ee.ut.math.tvt.salessystem.ui.model.HistoryPaymentDetailedWindowTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
+
+@Entity
+@Table(name = "HISTORY_ITEM")
 
 public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 	

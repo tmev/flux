@@ -19,7 +19,7 @@ public class SalesSystemModel {
 	@SuppressWarnings("unused")
 	private final SalesDomainController domainController;
 
-    /**
+	/**
      * Construct application model.
      * @param domainController Sales domain controller.
      */
@@ -45,6 +45,10 @@ public class SalesSystemModel {
     
     public HistoryTableModel getCurrentHistoryTableModel() {
 		return currentHistoryTableModel;
+	}
+    
+    public SalesDomainController getDomainController() {
+		return domainController;
 	}
     
 }

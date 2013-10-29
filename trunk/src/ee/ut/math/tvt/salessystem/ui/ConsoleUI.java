@@ -9,17 +9,23 @@ import java.util.NoSuchElementException;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.hibernate.Session;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 /**
  * A simple CLI (limited functionality).
  * 
  */
 public class ConsoleUI {
+	
+	private Session session = HibernateUtil.currentSession();
+	
 	private static final Logger log = LogManager.getLogger(ConsoleUI.class);
 
 	private final SalesDomainController dc;
@@ -106,8 +112,10 @@ public class ConsoleUI {
 
 		if (c[0].equals("h"))
 			printUsage();
-		else if (c[0].equals("q"))
+		else if (c[0].equals("q")) {
+			dc.endSession();
 			System.exit(0);
+		}
 		else if (c[0].equals("w"))
 			showStock(warehouse);
 		else if (c[0].equals("c"))
