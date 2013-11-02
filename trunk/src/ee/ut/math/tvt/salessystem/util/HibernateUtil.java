@@ -9,8 +9,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
-import ee.ut.math.tvt.flux.Intro;
-
 /**
  * Utility class that makes sure we has a single open hibernate session.
  */
