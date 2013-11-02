@@ -90,7 +90,7 @@ public class HistoryTab {
         JScrollPane scrollPane = new JScrollPane(table);
         
         TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-        table.getColumnModel().getColumn(3).setCellRenderer(buttonRenderer);
+        table.getColumnModel().getColumn(2).setCellRenderer(buttonRenderer);
         table.addMouseListener(new JTableButtonMouseListener(table));
 
         GridBagConstraints gc = new GridBagConstraints();

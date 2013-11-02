@@ -265,12 +265,10 @@ public class PurchaseTab implements ActionListener {
 			// Purchase accepted
 			try {
 				domainController.submitCurrentPurchase(salesSystemModel.getCurrentPurchaseTableModel().getTableRows());
-				String[] now = HistoryItem.timeDate();
-				String date = now[0];
-				String time = now[1];
+				String dateTime = HistoryItem.timeDate();
 				//add info to save
 				ArrayList<SoldItem> shoppingCartRows = salesSystemModel.getCurrentPurchaseTableModel().getAllRows();
-				salesSystemModel.getCurrentHistoryTableModel().addItem(new HistoryItem(salesSystemModel.getCurrentPurchaseTableModel(), date, time, shoppingCartRows));
+				salesSystemModel.getCurrentHistoryTableModel().addItem(new HistoryItem(salesSystemModel.getCurrentPurchaseTableModel(), dateTime, shoppingCartRows));
 				salesSystemModel.getCurrentPurchaseTableModel().clear();
 				endSale();
 			} catch (VerificationFailedException e1) {

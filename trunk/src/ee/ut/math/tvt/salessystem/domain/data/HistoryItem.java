@@ -23,8 +23,7 @@ import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
 public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 	
-	private String date;
-	private String time;
+	private String dateTime;
 	private double totalPrice;
 	private ArrayList<SoldItem> orderDetails;
 	private JButton orderDetailsButton;
@@ -33,10 +32,9 @@ public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 	HistoryPaymentDetailedWindow orderWindow;
 	private static final Logger log = LogManager.getLogger(PurchaseInfoTableModel.class);
 
-	public HistoryItem(PurchaseInfoTableModel modelPIT, String date, String time, ArrayList<SoldItem> orderDetails) {
+	public HistoryItem(PurchaseInfoTableModel modelPIT, String dateTime, ArrayList<SoldItem> orderDetails) {
 		this.totalPrice = modelPIT.getTotalSum();
-		this.date = date;
-		this.time = time;
+		this.dateTime = dateTime;
 		this.orderDetails = orderDetails;
 		this.orderDetailsButton = new  JButton("Order details");
 		
@@ -54,12 +52,8 @@ public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 		return orderDetails;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public String getTime() {
-		return time;
+	public String getDateTime() {
+		return dateTime;
 	}
 
 	public double getTotalPrice() {
@@ -78,11 +72,11 @@ public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 		return null;
 	}
 	
-	public static String[] timeDate() {
+	public static String timeDate() {
 
 		Date now = new Date();
 		SimpleDateFormat upDate = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-		String dateTime[] = upDate.format(now).split(" ");
+		String dateTime = upDate.format(now);
 		return dateTime;
 	}
 
