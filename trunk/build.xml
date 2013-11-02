@@ -25,34 +25,34 @@
 	<property name="db.alias"	value="POS"/>
 	<property name="db.url" 	value="jdbc:hsqldb:hsql://localhost/POS"/>
 	<property name="lib.hibernate.dir"   value="${lib.dir}/hibernate"/>
-	
+
 	<!-- path for ant to find Hibernate jar -->
 	<path id="run.classpath">
-	        <pathelement location="${build.classes.dir}"/>
-	        <!-- configuration -->
-	        <pathelement location="${conf.dir}"/>
-		
-	        <fileset dir="${lib.dir}">
-	            <include name="*.jar"/>
-	        </fileset>
+		<pathelement location="${build.classes.dir}"/>
+		<!-- configuration -->
+		<pathelement location="${conf.dir}"/>
 
-	        <fileset dir="${lib.hibernate.dir}">
-	             <include name="*.jar"/>
-	        </fileset>
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+
+		<fileset dir="${lib.hibernate.dir}">
+			<include name="*.jar"/>
+		</fileset>
 	</path>
-	
+
 	<!-- adding location of the jar files for DB -->
 	<path id="compile.classpath">
-	        <fileset dir="${lib.dir}">
-	            <include name="*.jar"/>
-	        </fileset>
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
 
-	        <fileset dir="${lib.hibernate.dir}">
-	             <include name="*.jar"/>
-	        </fileset>
-	 </path>
-	
-	
+		<fileset dir="${lib.hibernate.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+
 	<path id="base.path" path="${basedir}" />
 	<path id="class.path" path="${build.classes.dir}" />
 
@@ -91,7 +91,7 @@
 			</manifest>
 		</jar>
 		<copy todir="${dist.lib.dir}" flatten="true">
-		 	<path refid="compile.classpath" />
+			<path refid="compile.classpath" />
 		</copy>
 	</target>
 
@@ -105,7 +105,7 @@
 		</java>
 	</target>
 
-	
+
 	<target name="runc" depends="build" description="Run the application (console)">
 		<java classname="${main.class}" classpath="${build.classes.dir}" fork="true">
 			<arg value="console" />
@@ -115,7 +115,7 @@
 			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
 		</java>
 	</target>
-	
+
 
 	<target name="jrun" description="Run the built jar file.">
 		<java jar="${dist.jar}" fork="true" />
@@ -134,7 +134,7 @@
 			<entry key="build.number" operation="=" value="${new.build.major.number}.${new.build.minor.number}.${new.build.revision.number}" />
 		</propertyfile>
 	</target>
-	
+
 	<target name="git_commit" description="Commit and push changes to repository">
 		<exec executable="git">
 			<arg value="add" />
@@ -153,46 +153,44 @@
 			<arg value="https://${name}:${pas}@github.com/sergeijakovlev/flux.git"/>
 		</exec>
 	</target>
-	
+
 	<target name="git_tag" description="Creates a tag">
 		<input message="Name:" addproperty="namefortag" />
 		<input message="Password:" addproperty="pasfortag" />
 		<input message="Tag name:" addproperty="tagName" />
 		<input message="Tag coment:" addproperty="tagComent" />
-        <exec executable="git">
-                <arg value="tag" />
-                <arg value="-a" />
-                <arg value="${tagName}" />
-                <arg value="-m" />
-                <arg value="${tagComent}" />
-        </exec>
-        <exec executable="git">
-                <arg value="push" />
-        	<arg value="https://${namefortag}:${pasfortag}@github.com/sergeijakovlev/flux.git"/>
-                <arg value="--tags" />
-        </exec>
+		<exec executable="git">
+			<arg value="tag" />
+			<arg value="-a" />
+			<arg value="${tagName}" />
+			<arg value="-m" />
+			<arg value="${tagComent}" />
+		</exec>
+		<exec executable="git">
+			<arg value="push" />
+			<arg value="https://${namefortag}:${pasfortag}@github.com/sergeijakovlev/flux.git"/>
+			<arg value="--tags" />
+		</exec>
 	</target>
-	
+
 	<!-- DB targets -->
 	<target name="dbmanager" description="Start the HSQLDB manager">
-	        <java
+		<java
 	            classname="org.hsqldb.util.DatabaseManagerSwing"
 	            classpathref="run.classpath"
-	            fork="yes"
-	        >
-	            <arg line="--user sa --url ${db.url}" />
-	        </java>
-	    </target>
+	            fork="yes">
+			<arg line="--user sa --url ${db.url}" />
+		</java>
+	</target>
 
 	<target name="startdb" description="Start the HSQLDB with the default params">
-	        <java
+		<java
 	            classname="org.hsqldb.Server"
 	            classpathref="run.classpath"
-	            fork="yes"
-	        >
-	            <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
-	        </java>
+	            fork="yes">
+			<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
+		</java>
 	</target>
-		
+
 </project>
 
