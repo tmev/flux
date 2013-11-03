@@ -214,6 +214,8 @@ public class PurchaseItemPanel extends JPanel {
 		}
 	}
 
+	// Search the warehouse for a StockItem with the name entered.
+	
 	private StockItem getStockItemByName(String name) {
 		try {
 			return salesSystemModel.getWarehouseTableModel().getItemByName(name);

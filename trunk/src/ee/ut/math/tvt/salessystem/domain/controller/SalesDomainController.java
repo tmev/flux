@@ -59,5 +59,13 @@ public interface SalesDomainController {
     public void submitCurrentPurchase(List<SoldItem> goods)
             throws VerificationFailedException;
 
-    
+    /**
+     * Add item to warehouse.
+     * 
+     * @param goods
+     *            Goods that the buyer has chosen to buy.
+     * @throws VerificationFailedException
+     */
+    public void addItemToWarehouse(StockItem item)
+            throws VerificationFailedException;
 }

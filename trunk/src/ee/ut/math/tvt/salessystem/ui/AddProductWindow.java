@@ -3,16 +3,18 @@ package ee.ut.math.tvt.salessystem.ui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
+import ee.ut.math.tvt.salessystem.ui.tabs.StockTab;
 
 public class AddProductWindow {
 
@@ -21,7 +23,7 @@ public class AddProductWindow {
 	.getLogger(AddProductWindow.class);
 
 	public StockItem stockItem;
-	private StockTableModel stockTableModel;
+	private StockTab stockTab;
 
 	private JFrame frame;
 	private JPanel panel;
@@ -43,8 +45,8 @@ public class AddProductWindow {
 	private String description;
 	private int quantity;
 
-	public AddProductWindow(StockTableModel stockTableModel) {
-		this.stockTableModel = stockTableModel;
+	public AddProductWindow(StockTab stockTab) {
+		this.stockTab = stockTab;
 		createAddProductWindow();
 	}
 
@@ -94,8 +96,7 @@ public class AddProductWindow {
 			public void actionPerformed(ActionEvent e) {
 				check();
 				if (infoField.getText().equals("OK")) {
-					stockTableModel.addItem(stockItem);
-
+					stockTab.addItemToStock(stockItem);
 				}
 				if (checkDone) {
 					infoField.setText("OK");

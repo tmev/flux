@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
@@ -44,6 +45,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 			while(it.hasNext()) {
 				item = it.next();
 				item.setSale(newHistoryItem);
+				session.update(item.getStockItem());
 				session.save(item);
 			}
 			
@@ -74,5 +76,19 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	public List<HistoryItem> loadHistoryState() {
 		session.createQuery("from SoldItem").list();
 		return (List<HistoryItem>)(session.createQuery("from HistoryItem").list());
+	}
+
+	@Override
+	public void addItemToWarehouse(StockItem item)
+			throws VerificationFailedException {
+		session.beginTransaction();
+		try {
+			session.save(item);
+			session.getTransaction().commit();
+		} catch(Throwable e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			throw new VerificationFailedException("Cannot add new item to database!");
+		}
 	}
 }

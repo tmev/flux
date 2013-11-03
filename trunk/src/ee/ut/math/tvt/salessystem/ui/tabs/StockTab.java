@@ -1,9 +1,10 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.AddProductWindow;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,15 +25,30 @@ import org.apache.logging.log4j.Logger;
 
 
 public class StockTab {
-	StockTableModel stockTableModel;
 	private JButton addItem;
 	private static final Logger log = LogManager.getLogger(StockTab.class);
 	private SalesSystemModel model1;
+	private SalesDomainController domainController;
 
-	public StockTab(SalesSystemModel model) {
+	public StockTab(SalesSystemModel model, SalesDomainController domainController) {
 		this.model1 = model;
+		this.domainController = domainController;
 	}
 
+	/**
+	 * 
+	 * @param stockItem
+	 */
+	public void addItemToStock(StockItem stockItem) {
+		try {
+			domainController.addItemToWarehouse(stockItem);
+			model1.getWarehouseTableModel().addItem(stockItem);
+		} catch (VerificationFailedException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+	}
+	
 	// warehouse stock tab - consists of a menu and a table
 	public Component draw() {
 		JPanel panel = new JPanel();
@@ -71,9 +88,7 @@ public class StockTab {
 		addItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				log.debug("Add click.");
-				new AddProductWindow(model1.getWarehouseTableModel());
-
+				addItemActionPerformed();
 			}
 		});    
 
@@ -109,6 +124,11 @@ public class StockTab {
 		panel.setBorder(BorderFactory.createTitledBorder("Warehouse status"));
 
 		return panel;
+	}
+	
+	private void addItemActionPerformed() {
+		log.debug("Add click.");
+		new AddProductWindow(this);
 	}
 
 }
