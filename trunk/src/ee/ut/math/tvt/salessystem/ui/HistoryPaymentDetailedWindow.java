@@ -4,8 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -19,16 +18,16 @@ import org.apache.logging.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.ui.model.HistoryPaymentDetailedWindowTableModel;
-import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
 public class HistoryPaymentDetailedWindow {
 	
+	@SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger(PaymentWindow.class);
 	
 	private JFrame frame;
 	private HistoryPaymentDetailedWindowTableModel HistoryPaymentDetailedWindowTableModel;
 
-	public HistoryPaymentDetailedWindow(HistoryPaymentDetailedWindowTableModel HistoryPaymentDetailedWindowTableModel, ArrayList<SoldItem> orderDetails) {
+	public HistoryPaymentDetailedWindow(HistoryPaymentDetailedWindowTableModel HistoryPaymentDetailedWindowTableModel, List<SoldItem> orderDetails) {
     	this.HistoryPaymentDetailedWindowTableModel = HistoryPaymentDetailedWindowTableModel;
 		draw();
 		HistoryPaymentDetailedWindowTableModel.populateWithData(orderDetails);

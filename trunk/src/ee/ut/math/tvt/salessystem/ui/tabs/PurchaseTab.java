@@ -17,8 +17,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -265,15 +265,19 @@ public class PurchaseTab implements ActionListener {
 			// Purchase accepted
 			try {
 				domainController.submitCurrentPurchase(salesSystemModel.getCurrentPurchaseTableModel().getTableRows());
+				
 				String dateTime = HistoryItem.timeDate();
 				//add info to save
-				ArrayList<SoldItem> shoppingCartRows = salesSystemModel.getCurrentPurchaseTableModel().getAllRows();
-				salesSystemModel.getCurrentHistoryTableModel().addItem(new HistoryItem(salesSystemModel.getCurrentPurchaseTableModel(), dateTime, shoppingCartRows));
+				List<SoldItem> shoppingCartRows = salesSystemModel.getCurrentPurchaseTableModel().getAllRows();
+				salesSystemModel.getCurrentHistoryTableModel().addItem(new HistoryItem(dateTime, shoppingCartRows));
+				
+				
 				salesSystemModel.getCurrentPurchaseTableModel().clear();
 				endSale();
 			} catch (VerificationFailedException e1) {
 				// TODO Inform user that we cannot make a purchase
 				e1.printStackTrace();
+				
 			}
 			paymentWindow.close();
 		} else if (e.getID() == 1) {

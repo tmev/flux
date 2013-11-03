@@ -16,7 +16,6 @@ public class SalesSystemModel {
     // History model
     private HistoryTableModel currentHistoryTableModel;
 
-	@SuppressWarnings("unused")
 	private final SalesDomainController domainController;
 
 	/**
@@ -30,8 +29,9 @@ public class SalesSystemModel {
         currentPurchaseTableModel = new PurchaseInfoTableModel();
         currentHistoryTableModel = new HistoryTableModel();
 
-        // populate stock model with data from the warehouse
+        // Populate models with data from the database.
         warehouseTableModel.populateWithData(domainController.loadWarehouseState());
+        currentHistoryTableModel.populateWithData(domainController.loadHistoryState());
 
     }
 

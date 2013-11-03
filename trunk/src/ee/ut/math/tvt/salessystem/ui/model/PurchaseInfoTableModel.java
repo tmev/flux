@@ -82,7 +82,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 	 */
 	public double getTotalSum() {
 
-		int totalSum = 0;
+		double totalSum = 0;
 		
 		Iterator<SoldItem> it = rows.iterator();
 		

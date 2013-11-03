@@ -22,6 +22,11 @@ public class SoldItem implements Cloneable, DisplayableItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	// History id!
+	@ManyToOne(optional=false)
+	@JoinColumn(name="SALE_ID", nullable=false, updatable=false)
+    private HistoryItem sale;
+	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="STOCKITEM_ID", nullable=false, updatable=false)
     private StockItem stockItem;
@@ -44,6 +49,8 @@ public class SoldItem implements Cloneable, DisplayableItem {
         
     }
     
+    public SoldItem() {
+	}
     
     public Long getId() {
         return id;
@@ -52,8 +59,16 @@ public class SoldItem implements Cloneable, DisplayableItem {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    public String getName() {
+
+	public HistoryItem getSale() {
+		return sale;
+	}
+
+	public void setSale(HistoryItem sale) {
+		this.sale = sale;
+	}
+
+	public String getName() {
         return name;
     }
     

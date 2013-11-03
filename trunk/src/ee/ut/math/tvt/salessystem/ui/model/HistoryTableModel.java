@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.ui.model;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.swing.JButton;
@@ -44,7 +45,5 @@ public class HistoryTableModel extends SalesSystemTableModel<HistoryItem> {
 		rows.add(item);
 		fireTableDataChanged();
 	}
-	
-	
 
 }

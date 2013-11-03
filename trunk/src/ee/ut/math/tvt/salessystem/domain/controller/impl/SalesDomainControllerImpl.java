@@ -1,13 +1,13 @@
 package ee.ut.math.tvt.salessystem.domain.controller.impl;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
@@ -28,15 +28,33 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	
 	public void submitCurrentPurchase(List<SoldItem> goods)
 			throws VerificationFailedException {
-		// Let's assume we have checked and found out that the buyer is
-		// underaged and
-		// cannot buy chupa-chups
-
 		//throw new VerificationFailedException("Underaged!");
 
 		// XXX - Save purchase
 		log.info("Saving purchase");
-
+		
+		Iterator<SoldItem> it = goods.iterator();
+		SoldItem item;
+		session.beginTransaction();
+		
+		try {
+			HistoryItem newHistoryItem = new HistoryItem(HistoryItem.timeDate(), goods);
+			session.save(newHistoryItem);
+			
+			while(it.hasNext()) {
+				item = it.next();
+				item.setSale(newHistoryItem);
+				session.save(item);
+			}
+			
+			session.getTransaction().commit();
+			
+		} catch(Throwable e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			throw new VerificationFailedException("DB Failure!");
+		}
+		
 	}
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {
@@ -49,9 +67,12 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
 	@SuppressWarnings("unchecked")
 	public List<StockItem> loadWarehouseState() {
-		
 		return (List<StockItem>)(session.createQuery("from StockItem").list());
-
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<HistoryItem> loadHistoryState() {
+		session.createQuery("from SoldItem").list();
+		return (List<HistoryItem>)(session.createQuery("from HistoryItem").list());
+	}
 }
