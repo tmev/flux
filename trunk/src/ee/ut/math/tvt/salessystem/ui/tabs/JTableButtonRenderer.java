@@ -1,15 +1,10 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
-
-import ee.ut.math.tvt.salessystem.ui.HistoryPaymentDetailedWindow;
 
 class JTableButtonRenderer implements TableCellRenderer {    
 	
