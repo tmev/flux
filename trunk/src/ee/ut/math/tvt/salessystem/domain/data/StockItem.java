@@ -3,9 +3,10 @@ package ee.ut.math.tvt.salessystem.domain.data;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * Stock item. Corresponds to the Data Transfer Object design pattern.
@@ -15,7 +16,8 @@ import javax.persistence.Table;
 public class StockItem implements Cloneable, DisplayableItem {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GenericGenerator(name="seq_id", strategy="ee.ut.math.tvt.salessystem.hibernate.generators.IdKeepingSequenceGenerator")
+	@GeneratedValue(generator="seq_id")
     private Long id;
 
 	@Column(name = "name")
