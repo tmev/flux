@@ -81,7 +81,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
     }
     
     public void setPrice(double price) {
-        this.price = price;
+        this.price = (double)Math.round(price * 100) / 100;
     }
     
     public Integer getQuantity() {
@@ -93,7 +93,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
     }
 
     public double getSum() {
-        return price * ((double) quantity);
+        return (double)Math.round((price * (double) quantity) * 100) / 100;
     }
 
     public StockItem getStockItem() {

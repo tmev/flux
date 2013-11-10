@@ -182,10 +182,16 @@ public class PurchaseTab implements ActionListener {
 
 	/** Event handler for the <code>submit purchase</code> event. */
 	protected void submitPurchaseButtonClicked() {
-		log.debug("Contents of the current basket:\n" + salesSystemModel.getCurrentPurchaseTableModel());
-		paymentWindow = new PaymentWindow(salesSystemModel.getCurrentPurchaseTableModel(), this);
+		//contents empty
+		if (salesSystemModel.getCurrentPurchaseTableModel().getTableRows().size() != 0) {
+			log.debug("Contents of the current basket:\n" + salesSystemModel.getCurrentPurchaseTableModel());
+			paymentWindow = new PaymentWindow(salesSystemModel.getCurrentPurchaseTableModel(), this);
 		
-		log.debug("Window open");
+			log.debug("Window open");
+		}
+		else {
+			log.debug("Empty shopping cart!");
+		}
 	}
 
 
