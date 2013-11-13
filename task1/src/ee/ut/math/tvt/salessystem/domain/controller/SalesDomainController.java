@@ -68,4 +68,8 @@ public interface SalesDomainController {
      */
     public void addItemToWarehouse(StockItem item)
             throws VerificationFailedException;
+    
+    
+    public void deleteItemFromWarehouse(StockItem item)
+    		throws VerificationFailedException;
 }

@@ -72,5 +72,10 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 
 		return buffer.toString();
 	}
+	
+	public void deleteItem(StockItem item) {
+		rows.remove(item);
+		fireTableDataChanged();
+	}
 
 }

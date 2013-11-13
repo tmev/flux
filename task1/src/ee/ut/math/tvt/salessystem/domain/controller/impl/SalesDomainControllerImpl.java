@@ -91,4 +91,20 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 			throw new VerificationFailedException("Cannot add new item to database!");
 		}
 	}
+
+	@Override
+	public void deleteItemFromWarehouse(StockItem item)
+			throws VerificationFailedException {
+		// TODO Auto-generated method stub
+		session.beginTransaction();
+		try {
+			session.delete(item);
+			session.getTransaction().commit();
+		} catch(Throwable e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			throw new VerificationFailedException("Cannot add new item to database!");
+		}
+		
+	}
 }
