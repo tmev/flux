@@ -1,4 +1,3 @@
-package ee.ut.math.tvt;
 import org.junit.Before;
 import org.junit.Test;
 
