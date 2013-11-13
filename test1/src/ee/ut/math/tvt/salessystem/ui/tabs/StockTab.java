@@ -12,6 +12,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
@@ -28,9 +29,11 @@ import org.apache.logging.log4j.Logger;
 
 public class StockTab {
 	private JButton addItem;
+	private JButton deleteItem;
 	private static final Logger log = LogManager.getLogger(StockTab.class);
 	private SalesSystemModel model1;
 	private SalesDomainController domainController;
+	private int rowIndex;
 
 	public StockTab(SalesSystemModel model, SalesDomainController domainController) {
 		this.model1 = model;
@@ -41,10 +44,25 @@ public class StockTab {
 	 * 
 	 * @param stockItem
 	 */
+	
 	public void addItemToStock(StockItem stockItem) {
 		try {
 			domainController.addItemToWarehouse(stockItem);
 			model1.getWarehouseTableModel().addItem(stockItem);
+		} catch (VerificationFailedException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+	}
+	
+	public void changeRowIndex(int rowInd) {
+		rowIndex = rowInd;
+	}
+
+	public void deleteItemFromStock(StockItem stockItem) {
+		try {
+			domainController.deleteItemFromWarehouse(stockItem);
+			model1.getWarehouseTableModel().deleteItem(stockItem);
 		} catch (VerificationFailedException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
@@ -98,14 +116,23 @@ public class StockTab {
 		addItem = new JButton("Add");
 		addItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
-			{
+			{	
 				addItemActionPerformed();
 			}
-		});    
+		});
+		
+		deleteItem = new JButton("Delete");
+		deleteItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				deleteItemActionPerformed(rowIndex);
+			}
+		}); 
 
 		gc.gridwidth = GridBagConstraints.RELATIVE;
 		gc.weightx = 1.0;
 		panel.add(addItem, gc);
+		panel.add(deleteItem, gc);
 
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		return panel;
@@ -122,6 +149,8 @@ public class StockTab {
 		header.setReorderingAllowed(false);
 
 		JScrollPane scrollPane = new JScrollPane(table);
+		
+		table.addMouseListener(new JTableButtonMouseListenerStock(table, this));
 
 		GridBagConstraints gc = new GridBagConstraints();
 		GridBagLayout gb = new GridBagLayout();
@@ -140,6 +169,20 @@ public class StockTab {
 	private void addItemActionPerformed() {
 		log.debug("Add click.");
 		new AddProductWindow(this);
+	}
+	
+	private void deleteItemActionPerformed(int index) {
+		log.debug("Delete click.");
+		System.out.println(index);
+		List<StockItem> items = model1.getWarehouseTableModel().getTableRows();
+		try {
+			domainController.deleteItemFromWarehouse(items.get(index));
+		} catch (VerificationFailedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model1.getWarehouseTableModel().deleteItem(items.get(index));
+		
 	}
 
 }

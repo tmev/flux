@@ -78,7 +78,7 @@ public class SalesSystemUI extends JFrame {
     });
   }
 
-  private void drawWidgets() {
+private void drawWidgets() {
     JTabbedPane tabbedPane = new JTabbedPane();
 
     tabbedPane.add("Point-of-sale", purchaseTab.draw());

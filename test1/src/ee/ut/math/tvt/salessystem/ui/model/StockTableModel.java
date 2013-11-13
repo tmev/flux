@@ -53,6 +53,14 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		}
 		fireTableDataChanged();
 	}
+	
+	public void deleteItem(final StockItem stockItem) {
+		int ind = rows.indexOf(stockItem);
+		rows.remove(ind);
+		log.debug("Deleted " + stockItem.getName());
+		fireTableDataChanged();
+	}
+
 
 	@Override
 	public String toString() {
