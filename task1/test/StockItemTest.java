@@ -20,6 +20,11 @@ public class StockItemTest {
     
     @Test
     public void testGetColumn() {
+    	StockItem sti = new StockItem((long) 1,"Waka","Something Pacman says",333.5,30);
+    	assertEquals(sti.getColumn(0),sti.getId());
+    	assertEquals(sti.getColumn(1),sti.getName());
+    	assertEquals(sti.getColumn(2),sti.getPrice());
+    	assertEquals(sti.getColumn(3),sti.getQuantity());
     }
 
 }
