@@ -38,18 +38,6 @@ public class HistoryItemTest {
 	}
 	
 	@Test
-	public void testHistoryItemDefaultConstructor() {
-		HistoryItem hi = new HistoryItem();
-		String now = HistoryItem.timeDate();
-		assertTrue(now.equals(hi.getDateTime()));
-	}
-	
-	@Test
-	public void testHistoryItemConstructorWithDateTime() {
-		new HistoryItem(dateTime);
-	}
-	
-	@Test
 	public void testHistoryItemConstructorWithDateTimeAndOrderDetails() {;
 		HistoryItem hi = new HistoryItem(dateTime, soldItemListGood);
 		Iterator<SoldItem> it = hi.getOrderDetails().iterator();
