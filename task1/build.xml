@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." name="Intro" default="build">
 
-	<!-- Definitions of variables used during the rest of this script -->
+	<!-- Definitions of variables used during the rest of this script. -->
 
 	<property file="version.properties" />
 	<property file="application.properties" />
 
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="build.classes.dir" value="${build.dir}/classes" />
+	<property name="build.test.dir" value="${build.dir}/test" />
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="test.dir" value="${basedir}/test" />
 	<property name="dist.dir" value="${basedir}/dist" />
 	<property name="dist.lib.dir" value="${basedir}/dist/lib" />
 	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="conf.dir" value="${basedir}/conf" />
 
 	<property name="dist.jar" value="${dist.dir}/flux.jar" />
 	<property name="main.class" value="ee.ut.math.tvt.flux.Intro" />
-
-	<property name="lib.dir" value="${basedir}/lib"/>
-	<property name="conf.dir" value="${basedir}/conf"/>
-
+	
 	<!-- database variables -->
 	<property name="data.dir"	value="${basedir}/data"/>
 	<property name="db.file"	value="${data.dir}/POSdb"/>
@@ -26,6 +26,9 @@
 	<property name="db.url" 	value="jdbc:hsqldb:hsql://localhost/POS"/>
 	<property name="lib.hibernate.dir"   value="${lib.dir}/hibernate"/>
 
+	
+	
+	<!-- Classpaths -->
 	<!-- path for ant to find Hibernate jar -->
 	<path id="run.classpath">
 		<pathelement location="${build.classes.dir}"/>
@@ -52,6 +55,20 @@
 		</fileset>
 	</path>
 
+	<path id="test.classpath">
+		<pathelement location="${build.classes.dir}" />
+		<pathelement location="${conf.dir}" />
+		<pathelement location="${build.test.dir}" />
+
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+
+		<fileset dir="${lib.hibernate.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
 
 	<path id="base.path" path="${basedir}" />
 	<path id="class.path" path="${build.classes.dir}" />
@@ -60,20 +77,33 @@
 	<zipfileset id="log.api" includes="**/*.class" src="${lib.dir}/log4j-api-2.0-beta9.jar" />
 
 
+	
+	<!-- Build targets -->
+	
 	<target name="clean" description="Remove all files from previous build.">
 		<delete dir="${build.dir}" />
 		<delete dir="${dist.dir}" />
 	</target>
-
-
+	
+	
 	<target name="build" description="Build the system">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.classes.dir}" />
-		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" classpathref="compile.classpath" includeantruntime="false" debug="true">
+		<javac 
+			srcdir="${src.dir}" 
+			destdir="${build.classes.dir}" 
+			classpathref="compile.classpath" 
+			includeantruntime="false" 
+			debug="true"
+			debuglevel="lines,vars,source"
+			encoding="utf-8"
+			compiler="modern"
+			target="1.7"
+			source="1.7">
 		</javac>
 	</target>
-
-
+	
+	
 	<target name="dist" description="Build .jar file for distribution." depends="increaseRevision, build">
 		<jar destfile="${dist.jar}" basedir="${build.classes.dir}">
 			<zipfileset dir="${basedir}" includes="application.properties" fullpath="application.properties" />
@@ -94,8 +124,11 @@
 			<path refid="compile.classpath" />
 		</copy>
 	</target>
-
-
+	
+	
+	
+	<!-- Run targets -->
+	
 	<target name="run" description="Run the build.">
 		<java classname="${main.class}" classpath="${build.classes.dir}" fork="true">
 			<classpath refid="run.classpath" />
@@ -104,8 +137,8 @@
 			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
 		</java>
 	</target>
-
-
+	
+	
 	<target name="runc" depends="build" description="Run the application (console)">
 		<java classname="${main.class}" classpath="${build.classes.dir}" fork="true">
 			<arg value="console" />
@@ -115,13 +148,16 @@
 			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
 		</java>
 	</target>
-
-
+	
+	
 	<target name="jrun" description="Run the built jar file.">
 		<java jar="${dist.jar}" fork="true" />
 	</target>
-
-
+	
+	
+	
+	<!-- Revision management -->
+	
 	<target name="increaseRevision" description="Increase revision and update version.properties.">
 
 		<propertyfile file="version.properties" comment="Version properties">
@@ -134,6 +170,10 @@
 			<entry key="build.number" operation="=" value="${new.build.major.number}.${new.build.minor.number}.${new.build.revision.number}" />
 		</propertyfile>
 	</target>
+
+
+
+	<!-- Git targets -->
 
 	<target name="git_commit" description="Commit and push changes to repository">
 		<exec executable="git">
@@ -173,7 +213,10 @@
 		</exec>
 	</target>
 
+
+
 	<!-- DB targets -->
+
 	<target name="dbmanager" description="Start the HSQLDB manager">
 		<java
 	            classname="org.hsqldb.util.DatabaseManagerSwing"
@@ -190,6 +233,37 @@
 	            fork="yes">
 			<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
 		</java>
+	</target>
+
+
+
+	<!-- JUnit -->
+
+	<target name="build-tests" depends="build" description="Build JUnit tests.">
+		<mkdir dir="${build.test.dir}" />
+		<javac
+			srcdir="${test.dir}"
+			destdir="${build.test.dir}"
+			debug="true"
+			debuglevel="lines,vars,source"
+			encoding="utf-8"
+			compiler="modern"
+			target="1.7"
+			source="1.7"
+			classpathref="test.classpath"
+			includeantruntime="false">
+		</javac>
+	</target>
+
+	<target name="test" depends="build-tests" description="Run JUnit tests.">
+		<junit>
+			<classpath refid="test.classpath" />
+
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${build.test.dir}" includes="**/*.class" />
+			</batchtest>
+		</junit>
 	</target>
 
 </project>
