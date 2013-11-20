@@ -12,10 +12,10 @@ public class StockItemTest {
     public void testClone() {
      StockItem sti = new StockItem((long) 1," "," ",30);
      StockItem stiClone = (StockItem) sti.clone();
-     assertEquals(stiClone.getId(),sti.getId());
-     assertEquals(stiClone.getName(),sti.getName());
-     assertEquals(stiClone.getDescription(),sti.getDescription());
-     assertEquals(stiClone.getPrice(),sti.getPrice(), 0.0001);
+     assertEquals(sti.getId(),stiClone.getId());
+     assertEquals(sti.getName(),stiClone.getName());
+     assertEquals(sti.getDescription(),stiClone.getDescription());
+     assertEquals(sti.getPrice(),stiClone.getPrice(), 0.0001);
     }
     
     @Test

@@ -13,7 +13,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -70,12 +69,7 @@ public class StockTab {
 	}
 	
 	public boolean nameExistsInStock(String name) {
-		try {
-			model1.getWarehouseTableModel().getItemByName(name);
-			return true;
-		} catch(NoSuchElementException e) {
-			return false;
-		}
+		return model1.getWarehouseTableModel().nameExistsInStock(name);
 	}
 	
 	// warehouse stock tab - consists of a menu and a table

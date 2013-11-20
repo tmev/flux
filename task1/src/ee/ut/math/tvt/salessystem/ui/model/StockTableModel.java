@@ -77,5 +77,20 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		rows.remove(item);
 		fireTableDataChanged();
 	}
+	
+	public boolean nameExistsInStock(String name) {
+		try {
+			this.getItemByName(name);
+			return true;
+		} catch(NoSuchElementException e) {
+			return false;
+		}
+	}
+	
+	public boolean hasEnoughInStock(int stockSize,int quantity){
+		if (stockSize-quantity < 0) return false;
+		else return true;
+	}
+		
 
 }

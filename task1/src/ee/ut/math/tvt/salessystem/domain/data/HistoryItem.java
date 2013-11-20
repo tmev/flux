@@ -110,7 +110,7 @@ public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 	public void addOrderDetail(SoldItem soldItem) {
 		soldItem.setSale(this);
 		orderDetails.add(soldItem);
-		this.totalPrice = getTotalSum();
+		totalPrice = getTotalSum();
 	}
 	
 	private double getTotalSum() {
