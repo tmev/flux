@@ -1,7 +1,12 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.JButton;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,16 +16,72 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 
 public class HistoryItemTest {
-
-
+	
+	private List<SoldItem> soldItemListGood;
+	private double soldItemListGoodPrice;
+	private String dateTime = "2000.01.01 00:00:00";
+	
+	@Before
+	public void setUp() {
+		soldItemListGood = new ArrayList<SoldItem>();
+		long[] ids = {1, 100, Long.MAX_VALUE};
+		String[] names = {"First Element", "", "!@#$%^&*()_+=-1234567890][\'|/.,<>?"};
+		String[] descriptions = {"First Element", "", "!@#$%^&*()_+=-1234567890][\'|/.,<>?"};
+		double[] prices = {0.0, 1000.123456789, 9999999999999999.9};
+		int[] quantities = {10, 2, 1};
+		soldItemListGoodPrice = 0;
+		
+		for(int i = 0; i < 3; i++) {
+			soldItemListGood.add(new SoldItem(new StockItem(ids[i], names[i], descriptions[i], prices[i]), quantities[i]));
+			soldItemListGoodPrice += prices[i] * quantities[i];
+		}
+	}
+	
+	@Test
+	public void testHistoryItemDefaultConstructor() {
+		HistoryItem hi = new HistoryItem();
+		String now = HistoryItem.timeDate();
+		assertTrue(now.equals(hi.getDateTime()));
+	}
+	
+	@Test
+	public void testHistoryItemConstructorWithDateTime() {
+		new HistoryItem(dateTime);
+	}
+	
+	@Test
+	public void testHistoryItemConstructorWithDateTimeAndOrderDetails() {;
+		HistoryItem hi = new HistoryItem(dateTime, soldItemListGood);
+		Iterator<SoldItem> it = hi.getOrderDetails().iterator();
+		Iterator<SoldItem> itExp = soldItemListGood.iterator();
+		while (it.hasNext()) {
+			assertEquals(itExp.next(), it.next());
+		}
+	}
+	
     @Test
-    public void testAddHistotyItem() {
+    public void testGetOrderDetailsButton() {
+    	HistoryItem hi = new HistoryItem();
+    	assertTrue(hi.getOrderDetailsButton() instanceof JButton);
+    	assertEquals(hi, hi.getOrderDetailsButton().getActionListeners()[0]);
+    }
+    
+    @Test
+    public void testGetOrderDetails() {
+    	HistoryItem hi = new HistoryItem(dateTime, soldItemListGood);
+    	assertEquals(soldItemListGood, hi.getOrderDetails());
+    }
+    
+    @Test
+    public void getDateTime() {
+    	HistoryItem hi = new HistoryItem(dateTime, soldItemListGood);
+    	assertTrue(dateTime.equals(hi.getDateTime()));
     }
     
     @Test
     public void testGetSumWithNoItems() {
 		HistoryItem hi = new HistoryItem();
-    	assertEquals(hi.getTotalPrice(),0.0, 0.0001);
+    	assertEquals(0.0, hi.getTotalPrice(), 0.0001);
     }
 
     @Test
@@ -50,5 +111,26 @@ public class HistoryItemTest {
 		double result = sti1.getPrice()*si1.getQuantity()+sti2.getPrice()*si2.getQuantity()+sti3.getPrice()*si3.getQuantity()+sti4.getPrice()*si4.getQuantity();
     	
 		assertEquals(hi.getTotalPrice(),result, 0.0001);
+    }
+    
+    @Test
+    public void testGetId() {
+		HistoryItem hi = new HistoryItem();
+    	assertTrue(hi.getId() == null);
+    }
+    
+    @Test
+    public void testGetName() {
+    	HistoryItem hi = new HistoryItem(dateTime, soldItemListGood);
+    	assertTrue(dateTime.equals(hi.getName()));
+    }
+    
+    @Test
+    public void testAddOrderDetail() {
+    	HistoryItem hi = new HistoryItem(dateTime, soldItemListGood);
+    	SoldItem si = new SoldItem(new StockItem(1L, "TEST", "TEST", 333.3, 3), 2);
+    	hi.addOrderDetail(si);
+    	assertEquals(si, hi.getOrderDetails().get(3));
+    	assertEquals(soldItemListGoodPrice + si.getPrice() * 2, hi.getTotalPrice(), 0.00001);
     }
 }

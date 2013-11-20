@@ -61,8 +61,8 @@ public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 	
 	public HistoryItem(String dateTime) {
 		this.dateTime = dateTime;
-		this.totalPrice = getTotalSum();
 		this.orderDetails = new ArrayList<SoldItem>();
+		this.totalPrice = 0.0;
         historyPaymentDetailedWindowTableModel = new HistoryPaymentDetailedWindowTableModel();
 	}
 	
@@ -99,14 +99,6 @@ public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 	public String getName() {
 		return getDateTime();
 	}
-	
-	public static String timeDate() {
-
-		Date now = new Date();
-		SimpleDateFormat upDate = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-		String dateTime = upDate.format(now);
-		return dateTime;
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -118,6 +110,7 @@ public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 	public void addOrderDetail(SoldItem soldItem) {
 		soldItem.setSale(this);
 		orderDetails.add(soldItem);
+		this.totalPrice = getTotalSum();
 	}
 	
 	private double getTotalSum() {
@@ -135,6 +128,14 @@ public class HistoryItem implements Cloneable, DisplayableItem, ActionListener {
 		}
 		
 		return totalSum;
+	}
+
+	public static String timeDate() {
+
+		Date now = new Date();
+		SimpleDateFormat upDate = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+		String dateTime = upDate.format(now);
+		return dateTime;
 	}
 
 }
