@@ -46,7 +46,6 @@ public class SoldItem implements Cloneable, DisplayableItem {
         this.name = stockItem.getName();
         this.price = stockItem.getPrice();
         this.quantity = quantity;
-        
     }
     
     public SoldItem() {
@@ -81,7 +80,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
     }
     
     public void setPrice(double price) {
-        this.price = (double)Math.round(price * 100) / 100;
+        this.price = price;
     }
     
     public Integer getQuantity() {
