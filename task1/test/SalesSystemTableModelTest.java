@@ -57,7 +57,7 @@ public class SalesSystemTableModelTest {
 				   	
     	Throwable caught = null;
     	try {
-    		StockItem st3 = (StockItem) sstm.getItemById(2);
+    		sstm.getItemById(2);
     	} catch (Throwable t) {
     	   caught = t;
     	}
@@ -74,7 +74,7 @@ public class SalesSystemTableModelTest {
 				   	
     	Throwable caught = null;
     	try {
-    		StockItem st3 = (StockItem) sstm.getItemByName("WakaWaka");
+    		sstm.getItemByName("WakaWaka");
     	} catch (Throwable t) {
     	   caught = t;
     	}
@@ -84,6 +84,24 @@ public class SalesSystemTableModelTest {
 	}
 	@Test
 	public void testClear() {
+		
+		StockTableModel stm = new StockTableModel();
+		stm.addItem(sti);
+		stm.addItem(sti2);
+		
+		SalesSystemTableModel sstm = stm;		
+		sstm.clear();
+		
+		Throwable caught = null;
+    	try {
+    		sstm.getItemByName(sti.getName());
+    	} catch (Throwable t) {
+    	   caught = t;
+    	}
+    	assertNotNull(caught);
+    	assertSame(NoSuchElementException.class, caught.getClass());
+		
+		
 		
 	}
 }
