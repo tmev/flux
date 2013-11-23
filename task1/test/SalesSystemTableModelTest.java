@@ -100,8 +100,6 @@ public class SalesSystemTableModelTest {
     	}
     	assertNotNull(caught);
     	assertSame(NoSuchElementException.class, caught.getClass());
-		
-		
-		
+				
 	}
 }
