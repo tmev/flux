@@ -18,7 +18,6 @@ public class PurchaseInfoTableModelTest extends PurchaseInfoTableModel{
 	
 	@Test
 	public void testGetColumnValue(){			
-		
 		assertEquals(si.getId(),getColumnValue(si, 0));
 	    assertEquals(si.getName(),getColumnValue(si, 1));
 	    assertEquals(si.getPrice(),getColumnValue(si, 2));
@@ -26,17 +25,9 @@ public class PurchaseInfoTableModelTest extends PurchaseInfoTableModel{
 	    assertEquals(si.getSum(),getColumnValue(si, 4));	
 	}
 	
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetColumnValueWithIllegalArgument() {			
-		Throwable caught = null;
-    	try {
-    		getColumnValue(si, 9000);
-    	} catch (Throwable t) {
-    	   caught = t;
-    	}
-    	assertNotNull(caught);
-    	assertSame(IllegalArgumentException.class, caught.getClass());
-		
+    	getColumnValue(si, 9000);	
 	}
 	
 	@Test
@@ -45,12 +36,7 @@ public class PurchaseInfoTableModelTest extends PurchaseInfoTableModel{
 		pitm.addItem(si);
 		pitm.addItem(si);
 		SoldItem si1 = pitm.getItemById(sti.getId());
-		
-		assertEquals(si.getId(),si1.getId());
-	    assertEquals(si.getName(),si1.getName());
-	    assertEquals(si.getQuantity(),si1.getQuantity());
-	    assertEquals(si.getPrice(),si1.getPrice(), 0.0001);
-		
+		assertEquals(si,si1);		
 	}
 	
 	@Test
@@ -78,10 +64,7 @@ public class PurchaseInfoTableModelTest extends PurchaseInfoTableModel{
 		ArrayList<SoldItem> list = pitm.getAllRows();
 		
 		for(int i=0;i<list.size();i++){
-			assertEquals(list.get(i).getId(),pitm.getItemById(i+1).getId());
-		    assertEquals(list.get(i).getName(),pitm.getItemById(i+1).getName());
-		    assertEquals(list.get(i).getQuantity(),pitm.getItemById(i+1).getQuantity());
-		    assertEquals(list.get(i).getPrice(),pitm.getItemById(i+1).getPrice(), 0.0001);
+			assertEquals(list.get(i).toString(),pitm.getItemById(i+1).toString());
 		}
 		
 	}

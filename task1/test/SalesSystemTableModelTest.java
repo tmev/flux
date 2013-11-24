@@ -17,89 +17,45 @@ public class SalesSystemTableModelTest {
 	
 	@Test
 	public void testGetItemById(){	
-		
 		StockTableModel stm = new StockTableModel();
 		stm.addItem(sti);
-		stm.addItem(sti2);
-		
 		SalesSystemTableModel sstm = stm;		
-		StockItem st3 = (StockItem) sstm.getItemById(sti.getId());
-		
-		assertEquals(st3.getColumn(0),sti.getId());
-    	assertEquals(st3.getColumn(1),sti.getName());
-    	assertEquals(st3.getColumn(2),sti.getPrice());
-    	assertEquals(st3.getColumn(3),sti.getQuantity());
+		assertEquals((StockItem) sstm.getItemById(sti.getId()),sti);
 		
 	}
 	
 	@Test
 	public void testGetItemByName() {
-		
 		StockTableModel stm = new StockTableModel();
 		stm.addItem(sti);
 		stm.addItem(sti2);
-		
-		SalesSystemTableModel sstm = stm;		
-		StockItem st3 = (StockItem) sstm.getItemByName(sti.getName());
-		
-		assertEquals(st3.getColumn(0),sti.getId());
-    	assertEquals(st3.getColumn(1),sti.getName());
-    	assertEquals(st3.getColumn(2),sti.getPrice());
-    	assertEquals(st3.getColumn(3),sti.getQuantity());
+		SalesSystemTableModel sstm = stm;				
+		assertEquals((StockItem) sstm.getItemByName(sti.getName()),sti);
 		
 	}
 	
-	@Test
-	public void testGetItemByNonExistingId() {
-		
+	@Test(expected = NoSuchElementException.class)
+	public void testGetItemByNonExistingId() {	
 		StockTableModel stm = new StockTableModel();		
 		SalesSystemTableModel sstm = stm;
-				   	
-    	Throwable caught = null;
-    	try {
-    		sstm.getItemById(2);
-    	} catch (Throwable t) {
-    	   caught = t;
-    	}
-    	assertNotNull(caught);
-    	assertSame(NoSuchElementException.class, caught.getClass());
-		
+   		sstm.getItemById(2);	
 	}
 	
-	@Test
+	@Test(expected = NoSuchElementException.class)
 	public void testgetItemByNonExistingName() {
-		
 		StockTableModel stm = new StockTableModel();
 		SalesSystemTableModel sstm = stm;
-				   	
-    	Throwable caught = null;
-    	try {
-    		sstm.getItemByName("WakaWaka");
-    	} catch (Throwable t) {
-    	   caught = t;
-    	}
-    	assertNotNull(caught);
-    	assertSame(NoSuchElementException.class, caught.getClass());
+   		sstm.getItemByName("WakaWaka");
 		
 	}
-	@Test
+	@Test(expected = NoSuchElementException.class)
 	public void testClear() {
-		
 		StockTableModel stm = new StockTableModel();
 		stm.addItem(sti);
 		stm.addItem(sti2);
 		
 		SalesSystemTableModel sstm = stm;		
 		sstm.clear();
-		
-		Throwable caught = null;
-    	try {
-    		sstm.getItemByName(sti.getName());
-    	} catch (Throwable t) {
-    	   caught = t;
-    	}
-    	assertNotNull(caught);
-    	assertSame(NoSuchElementException.class, caught.getClass());
-				
+   		sstm.getItemByName(sti.getName());				
 	}
 }
