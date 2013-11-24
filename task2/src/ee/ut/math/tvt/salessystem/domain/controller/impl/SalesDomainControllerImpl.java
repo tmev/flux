@@ -112,10 +112,10 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
     public void startNewPurchase() {
         // XXX - Start new purchase
+    	Sale sale = new Sale(model.getSelectedClient());
+    	model.setSale(sale);
         log.info("New purchase started");
     }
-
-
 
     public void setModel(SalesSystemModel model) {
         this.model = model;

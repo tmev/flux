@@ -2,7 +2,6 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.Client;
-import ee.ut.math.tvt.salessystem.domain.data.Sale;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
@@ -162,7 +161,6 @@ public class PurchaseTab {
         PayingWindow.show(price, this);
     }
 
-
     public void endPurchaseAfterPaying() {
         log.info("Sale complete");
         try {
@@ -170,9 +168,9 @@ public class PurchaseTab {
             log.debug("Contents of the current basket:\n"
                     + model.getCurrentPurchaseTableModel());
             
-            Sale sale = new Sale(model.getCurrentPurchaseTableModel().getTableRows());
-            sale.setClient(model.getSelectedClient());
-            domainController.registerSale(sale);
+            //Sale sale = new Sale(model.getCurrentPurchaseTableModel().getTableRows());
+            //sale.setClient(model.getSelectedClient());
+            domainController.registerSale(model.getSale());
             endSale();
             model.getCurrentPurchaseTableModel().clear();
         } catch (VerificationFailedException e1) {

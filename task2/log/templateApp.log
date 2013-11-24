@@ -1,1 +1,24 @@
-2013-11-24 17:24:11,005 [main] DEBUG - Strating SalesSystem with the Swing UI ..
+2013-11-24 21:42:42,047 [main] DEBUG - Strating SalesSystem with the Swing UI ..
+2013-11-24 21:42:42,240 [main] INFO - 5 items loaded from disk
+2013-11-24 21:42:42,244 [main] INFO - 1 clients loaded from disk
+2013-11-24 21:42:42,258 [main] INFO - 11 Sales loaded from disk
+2013-11-24 21:42:42,464 [main] INFO - SalesSystem started
+2013-11-24 21:42:47,274 [AWT-EventQueue-0] INFO - New sale process started
+2013-11-24 21:42:47,275 [AWT-EventQueue-0] INFO - New purchase started
+2013-11-24 21:42:47,284 [AWT-EventQueue-0] INFO - 1 clients loaded from disk
+2013-11-24 21:42:48,701 [AWT-EventQueue-0] INFO - Client Toomas with ID=1 got selected.
+2013-11-24 21:42:51,221 [AWT-EventQueue-0] DEBUG - Added Layz kr?psud quantity of 3
+2013-11-24 21:43:02,142 [AWT-EventQueue-0] INFO - Sale complete
+2013-11-24 21:43:02,142 [AWT-EventQueue-0] DEBUG - Contents of the current basket:
+Id	Name	Price	Quantity	Sum	
+null	Layz kr?psud	10.5	3	31.5	
+
+2013-11-24 21:43:03,681 [AWT-EventQueue-0] INFO - Updating history.
+2013-11-24 21:43:03,685 [AWT-EventQueue-0] INFO - 12 Sales loaded from disk
+2013-11-24 21:43:08,962 [AWT-EventQueue-0] INFO - New sale process started
+2013-11-24 21:43:08,963 [AWT-EventQueue-0] INFO - New purchase started
+2013-11-24 21:43:08,968 [AWT-EventQueue-0] INFO - 1 clients loaded from disk
+2013-11-24 21:43:10,145 [AWT-EventQueue-0] INFO - Client Toomas with ID=1 got selected.
+2013-11-24 21:43:12,879 [AWT-EventQueue-0] DEBUG - Added Layz kr?psud quantity of 1
+2013-11-24 21:43:13,295 [AWT-EventQueue-0] DEBUG - Found existing item Layz kr?psud increased quantity by 1
+2013-11-24 21:43:13,699 [AWT-EventQueue-0] DEBUG - Found existing item Layz kr?psud increased quantity by 1

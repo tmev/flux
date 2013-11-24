@@ -20,87 +20,87 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "SALE")
 public class Sale implements DisplayableItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @OneToMany(targetEntity = SoldItem.class, mappedBy = "sale", cascade = CascadeType.ALL)
-    private List<SoldItem> soldItems;
-    private Date sellingTime;
+	@OneToMany(targetEntity = SoldItem.class, mappedBy = "sale", cascade = CascadeType.ALL)
+	private List<SoldItem> soldItems;
+	private Date sellingTime;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "CLIENT_ID")
-    private Client client;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "CLIENT_ID")
+	private Client client;
 
-    /** Empty constructors are used by hibernate */
-    public Sale() {
-            this.soldItems = new ArrayList<>();
-    }
-    
-    public Sale(Client client) {
-        this.client = client;
-    }
+	/** Empty constructors are used by hibernate */
+	public Sale() {
+		this.soldItems = new ArrayList<>();
+	}
 
-    public Sale(List<SoldItem> goods) {
-        this.soldItems = goods;
-        this.sellingTime = new Date();
-    }
+	public Sale(Client client) {
+		this.client = client;
+		this.soldItems = new ArrayList<>();
+	}
 
-    public Client getClient() {
-        return client;
-    }
+	public Sale(List<SoldItem> goods) {
+		this.soldItems = goods;
+		this.sellingTime = new Date();
+	}
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
+	public Client getClient() {
+		return client;
+	}
 
-    public Date getSellingTime() {
-        return sellingTime;
-    }
+	public void setClient(Client client) {
+		this.client = client;
+	}
 
-    public void setSellingTime(Date sellingTime) {
-        this.sellingTime = sellingTime;
-    }
+	public Date getSellingTime() {
+		return sellingTime;
+	}
 
-    public List<SoldItem> getSoldItems() {
-        return soldItems;
-    }
+	public void setSellingTime(Date sellingTime) {
+		this.sellingTime = sellingTime;
+	}
 
-    public void setSoldItems(List<SoldItem> soldItems) {
-        this.soldItems = soldItems;
-    }
+	public List<SoldItem> getSoldItems() {
+		return soldItems;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public void setSoldItems(List<SoldItem> soldItems) {
+		this.soldItems = soldItems;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void addSoldItem(SoldItem item) {
-        item.setSale(this);
-        soldItems.add(item);
-    }
-    
-    public void addItem(StockItem item) {
-    	SoldItem sItem = new SoldItem(item,1);
-    	if(soldItems.contains(sItem)){
-    		soldItems.get(soldItems.indexOf(sItem)).setQuantity(sItem.getQuantity()+1);
-    	}
-    	else{
-    		soldItems.add(sItem);
-    	}
-    	
-    }
-    
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public double getSum() {
-        double sum = 0.0;
-        for (SoldItem item : soldItems) {
-            sum = sum + item.getPrice() * ((double) item.getQuantity());
-        }
-        return sum;
-    }
+	public void addSoldItem(SoldItem item) {
+		item.setSale(this);
+		soldItems.add(item);
+	}
+
+	public void addItem(StockItem item, int quantity) {
+		for (SoldItem sItem: soldItems) {
+			if (sItem.getStockItem() == item){
+				sItem.setQuantity(sItem.getQuantity() + quantity);
+				return;
+			}
+		}
+		SoldItem sItem = new SoldItem(item, quantity);
+		soldItems.add(sItem);
+	}
+
+	public double getSum() {
+		double sum = 0.0;
+		for (SoldItem item : soldItems) {
+			sum = sum + item.getPrice() * ((double) item.getQuantity());
+		}
+		return sum;
+	}
 
 }
