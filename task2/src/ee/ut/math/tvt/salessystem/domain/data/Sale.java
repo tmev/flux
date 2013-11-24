@@ -34,7 +34,11 @@ public class Sale implements DisplayableItem {
 
     /** Empty constructors are used by hibernate */
     public Sale() {
-    	this.soldItems = new ArrayList<>();
+            this.soldItems = new ArrayList<>();
+    }
+    
+    public Sale(Client client) {
+        this.client = client;
     }
 
     public Sale(List<SoldItem> goods) {
@@ -78,6 +82,18 @@ public class Sale implements DisplayableItem {
         item.setSale(this);
         soldItems.add(item);
     }
+    
+    public void addItem(StockItem item) {
+    	SoldItem sItem = new SoldItem(item,1);
+    	if(soldItems.contains(sItem)){
+    		soldItems.get(soldItems.indexOf(sItem)).setQuantity(sItem.getQuantity()+1);
+    	}
+    	else{
+    		soldItems.add(sItem);
+    	}
+    	
+    }
+    
 
     public double getSum() {
         double sum = 0.0;
