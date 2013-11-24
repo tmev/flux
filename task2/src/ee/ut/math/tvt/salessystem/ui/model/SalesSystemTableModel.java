@@ -1,9 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import javax.swing.table.AbstractTableModel;
 
 import ee.ut.math.tvt.salessystem.domain.data.DisplayableItem;
@@ -16,12 +14,10 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
 
     private static final long serialVersionUID = 1L;
 
-    protected List<T> rows;
     protected final String[] headers;
 
     public SalesSystemTableModel(final String[] headers) {
         this.headers = headers;
-        rows = new ArrayList<T>();
     }
 
     /**
@@ -43,16 +39,19 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
     }
 
     public int getRowCount() {
-        return rows.size();
+    	if (getRows() == null) {
+    		return 0;
+    	}
+        return getRows().size();
     }
 
     public Object getValueAt(final int rowIndex, final int columnIndex) {
-        return getColumnValue(rows.get(rowIndex), columnIndex);
+        return getColumnValue(getRows().get(rowIndex), columnIndex);
     }
 
     // search for item with the specified id
     public T getItemById(final long id) {
-        for (final T item : rows) {
+        for (final T item : getRows()) {
             if (item.getId() == id)
                 return item;
         }
@@ -60,30 +59,22 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
     }
 
     public List<T> getTableRows() {
-        return rows;
-    }
-
-    public void clear() {
-        rows = new ArrayList<T>();
-        fireTableDataChanged();
+        return getRows();
     }
 
     public void populateWithData(final List<T> data) {
-        rows.clear();
-        rows.addAll(data);
+        getRows().clear();
+        getRows().addAll(data);
     }
     
     public void addRow(T row) {
-        rows.add(row);
+        getRows().add(row);
         fireTableDataChanged();
     }
     
     public T getRow(int index) {
-        return rows.get(index);
+        return getRows().get(index);
     }
     
-    public List<T> getRows() {
-        return rows;
-    }
-    
+    public abstract List<T> getRows();
 }
