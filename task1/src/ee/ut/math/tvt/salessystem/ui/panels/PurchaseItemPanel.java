@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
 
 /**
@@ -250,7 +251,7 @@ public class PurchaseItemPanel extends JPanel {
 				quantityField.setText("1");
 				return;
 			}
-			if (salesSystemModel.getWarehouseTableModel().hasEnoughInStock(stockSize, quantity)){
+			if (StockTableModel.hasEnoughInStock(stockSize, quantity)){
 				salesSystemModel.getCurrentPurchaseTableModel().addItem(new SoldItem(stockItem, quantity));
 				stockItem.setQuantity(stockItem.getQuantity()-quantity);
 				if (stockSize-quantity == 0) {

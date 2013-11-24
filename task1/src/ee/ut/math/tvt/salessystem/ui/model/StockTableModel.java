@@ -87,7 +87,10 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		}
 	}
 	
-	public boolean hasEnoughInStock(int stockSize,int quantity){
+	public static boolean hasEnoughInStock(int stockSize, int quantity){
+		if (stockSize < 0 || quantity < 0) {
+			throw new IllegalArgumentException("Quantities cannot be negative.");
+		}
 		if (stockSize-quantity < 0) return false;
 		else return true;
 	}
