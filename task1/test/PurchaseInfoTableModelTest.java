@@ -1,10 +1,5 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
-
 import org.junit.Test;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
@@ -12,6 +7,8 @@ import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
 public class PurchaseInfoTableModelTest extends PurchaseInfoTableModel{
+	
+	private static final long serialVersionUID = -3355723967363152090L;
 	
 	StockItem sti = new StockItem((long) 1, "Name", "Desctiption", 12.34, 22);
 	SoldItem si = new SoldItem(sti, 3);
