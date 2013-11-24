@@ -54,10 +54,10 @@ public class SalesSystemUI extends JFrame {
 		domainController.setModel(model);
 
 		// Create singleton instances of the tab classes
-		historyTab = new HistoryTab(model);
+		historyTab = new HistoryTab(model, domainController);
 		stockTab = new StockTab(model, domainController);
 		purchaseTab = new PurchaseTab(domainController, model, this);
-		clientTab = new ClientTab(model);
+		clientTab = new ClientTab(model, domainController);
 
 		setTitle("Sales system");
 
@@ -102,20 +102,17 @@ public class SalesSystemUI extends JFrame {
 				switch (index) {
 				case 1:
 					log.info("Updating warehouse.");
-					model.getWarehouseTableModel().populateWithData(domainController.getAllStockItems());
-					model.getWarehouseTableModel().fireTableDataChanged();
+					stockTab.update();
 					break;
 					
 				case 2:
 					log.info("Updating history.");
-					model.getPurchaseHistoryTableModel().populateWithData(domainController.getAllSales());
-					model.getPurchaseHistoryTableModel().fireTableDataChanged();
+					historyTab.update();
 					break;
 					
 				case 3:
 					log.info("Updating clients.");
-					model.getClientTableModel().populateWithData(domainController.getAllClients());
-					model.getClientTableModel().fireTableDataChanged();
+					clientTab.update();
 					break;
 
 				default:

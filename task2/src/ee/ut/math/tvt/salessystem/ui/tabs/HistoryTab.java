@@ -1,11 +1,14 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.Sale;
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,11 +25,13 @@ import javax.swing.event.ListSelectionListener;
 public class HistoryTab {
 
     private SalesSystemModel model;
+    private SalesDomainController domainController;
 
     private PurchaseInfoTableModel historyDetailsTableModel;
 
-    public HistoryTab(SalesSystemModel model) {
+    public HistoryTab(SalesSystemModel model, SalesDomainController domainController) {
         this.model = model;
+        this.domainController = domainController;
     }
 
     /**
@@ -43,6 +48,11 @@ public class HistoryTab {
         panel.add(drawHistoryDetailsTable(), gc);
 
         return panel;
+    }
+    
+    public void update() {
+    	model.getPurchaseHistoryTableModel().populateWithData(domainController.getAllSales());
+    	model.getPurchaseHistoryTableModel().fireTableDataChanged();
     }
 
 
