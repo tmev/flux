@@ -1,6 +1,9 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -8,24 +11,37 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
-public class PurchaseInfoTableModelTest {
+public class PurchaseInfoTableModelTest extends PurchaseInfoTableModel{
 	
-		
+	StockItem sti = new StockItem((long) 1, "Name", "Desctiption", 12.34, 22);
+	SoldItem si = new SoldItem(sti, 3);
+	
 	@Test
-	public void testGetColumnValue(){	
-	
+	public void testGetColumnValue(){			
+		
+		assertEquals(si.getId(),getColumnValue(si, 0));
+	    assertEquals(si.getName(),getColumnValue(si, 1));
+	    assertEquals(si.getPrice(),getColumnValue(si, 2));
+	    assertEquals(si.getQuantity(),getColumnValue(si, 3));
+	    assertEquals(si.getSum(),getColumnValue(si, 4));	
 	}
 	
 	@Test
-	public void testGetColumnValueWithIllegalArgument() {	
+	public void testGetColumnValueWithIllegalArgument() {			
+		Throwable caught = null;
+    	try {
+    		getColumnValue(si, 9000);
+    	} catch (Throwable t) {
+    	   caught = t;
+    	}
+    	assertNotNull(caught);
+    	assertSame(IllegalArgumentException.class, caught.getClass());
 		
 	}
 	
 	@Test
 	public void testAddItem() {
 		PurchaseInfoTableModel pitm = new PurchaseInfoTableModel();
-		StockItem sti = new StockItem((long) 1, "Name", "Desctiption", 12.34, 22);
-		SoldItem si = new SoldItem(sti, 3);
 		pitm.addItem(si);
 		pitm.addItem(si);
 		SoldItem si1 = pitm.getItemById(sti.getId());
@@ -40,8 +56,6 @@ public class PurchaseInfoTableModelTest {
 	@Test
 	public void testGetTotalSum() {
 		PurchaseInfoTableModel pitm = new PurchaseInfoTableModel();
-		StockItem sti = new StockItem((long) 1, "Name", "Desctiption", 12.34, 22);
-		SoldItem si = new SoldItem(sti, 3);
 		pitm.addItem(si);
 		pitm.addItem(si);
 		assertEquals(pitm.getTotalSum(),sti.getPrice()*si.getQuantity(),0.0001);
