@@ -57,7 +57,7 @@ public class StockTab {
         return panel;
     }
     
-    public void update() {
+    public void refresh() {
     	model.getWarehouseTableModel().populateWithData(controller.getAllStockItems());
 		model.getWarehouseTableModel().fireTableDataChanged();
     }

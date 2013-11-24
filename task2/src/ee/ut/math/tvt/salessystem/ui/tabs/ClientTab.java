@@ -38,7 +38,7 @@ public class ClientTab {
         return panel;
     }
     
-    public void update() {
+    public void refresh() {
     	model.getClientTableModel().populateWithData(domainController.getAllClients());
 		model.getClientTableModel().fireTableDataChanged();
     }

@@ -50,7 +50,7 @@ public class HistoryTab {
         return panel;
     }
     
-    public void update() {
+    public void refresh() {
     	model.getPurchaseHistoryTableModel().populateWithData(domainController.getAllSales());
     	model.getPurchaseHistoryTableModel().fireTableDataChanged();
     }

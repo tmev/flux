@@ -102,17 +102,17 @@ public class SalesSystemUI extends JFrame {
 				switch (index) {
 				case 1:
 					log.info("Updating warehouse.");
-					stockTab.update();
+					stockTab.refresh();
 					break;
 					
 				case 2:
 					log.info("Updating history.");
-					historyTab.update();
+					historyTab.refresh();
 					break;
 					
 				case 3:
 					log.info("Updating clients.");
-					clientTab.update();
+					clientTab.refresh();
 					break;
 
 				default:
